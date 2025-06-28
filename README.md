@@ -42,7 +42,7 @@ An advanced World of Warcraft addon for finding and messaging arena players effi
 
 The addon parses lines in this format:
 ```
-13 2853 Envyion Sargeras Alliance Night Elf Female Priest Shadow dgb 130 - 55 70.3%
+13 2853 Rudar Sargeras Alliance Night Elf Female Priest Shadow dgb 130 - 55 70.3%
 ```
 
 It extracts the player name (3rd field) and realm (4th field) to create entries like `Rudar-Sargeras`.
