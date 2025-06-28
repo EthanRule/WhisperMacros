@@ -1,0 +1,10 @@
+## WhisperMacros.toc
+
+## Interface: 110002
+## Title: WhisperMacros
+## Notes: Advanced arena whisper automation
+## Author: Ethan Rule
+## Version: 2.0.0
+## SavedVariables: WhisperMacrosDB
+
+WhisperMacros.lua
