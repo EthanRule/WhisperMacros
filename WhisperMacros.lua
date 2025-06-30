@@ -7,6 +7,101 @@ local function trim(s)
     return s and s:match("^%s*(.-)%s*$") or ""
 end
 
+-- Function to get spec icon path
+local function GetSpecIcon(class, spec)
+    if not class or not spec then
+        return "Interface\\Icons\\INV_Misc_QuestionMark"
+    end
+    
+    local specIcons = {
+        -- Death Knight
+        ["DEATHKNIGHT"] = {
+            ["Blood"] = "Interface\\Icons\\Spell_Deathknight_BloodPresence",
+            ["Frost"] = "Interface\\Icons\\Spell_Deathknight_FrostPresence",
+            ["Unholy"] = "Interface\\Icons\\Spell_Deathknight_UnholyPresence"
+        },
+        -- Demon Hunter
+        ["DEMONHUNTER"] = {
+            ["Havoc"] = "Interface\\Icons\\Ability_DemonHunter_SpecDPS",
+            ["Vengeance"] = "Interface\\Icons\\Ability_DemonHunter_SpecTank"
+        },
+        -- Druid
+        ["DRUID"] = {
+            ["Balance"] = "Interface\\Icons\\Spell_Nature_StarFall",
+            ["Feral"] = "Interface\\Icons\\Ability_Druid_CatForm",
+            ["Guardian"] = "Interface\\Icons\\Ability_Racial_BearForm",
+            ["Restoration"] = "Interface\\Icons\\Spell_Nature_HealingTouch"
+        },
+        -- Evoker
+        ["EVOKER"] = {
+            ["Devastation"] = "Interface\\Icons\\ClassIcon_Evoker_Devastation",
+            ["Preservation"] = "Interface\\Icons\\ClassIcon_Evoker_Preservation",
+            ["Augmentation"] = "Interface\\Icons\\ClassIcon_Evoker_Augmentation"
+        },
+        -- Hunter
+        ["HUNTER"] = {
+            ["Beast"] = "Interface\\Icons\\Ability_Hunter_BeastMastery",
+            ["Marksmanship"] = "Interface\\Icons\\Ability_Hunter_FocusedAim",
+            ["Survival"] = "Interface\\Icons\\Ability_Hunter_Camouflage"
+        },
+        -- Mage
+        ["MAGE"] = {
+            ["Arcane"] = "Interface\\Icons\\Spell_Holy_MagicalSentry",
+            ["Fire"] = "Interface\\Icons\\Spell_Fire_FlameBolt",
+            ["Frost"] = "Interface\\Icons\\Spell_Frost_FrostBolt02"
+        },
+        -- Monk
+        ["MONK"] = {
+            ["Brewmaster"] = "Interface\\Icons\\Spell_Monk_BrewmasterSpec",
+            ["Mistweaver"] = "Interface\\Icons\\Spell_Monk_MistweaverSpec",
+            ["Windwalker"] = "Interface\\Icons\\Spell_Monk_WindwalkerSpec"
+        },
+        -- Paladin
+        ["PALADIN"] = {
+            ["Holy"] = "Interface\\Icons\\Spell_Holy_HolyBolt",
+            ["Protection"] = "Interface\\Icons\\Ability_Paladin_ShieldofVengeance",
+            ["Retribution"] = "Interface\\Icons\\Spell_Holy_AuraOfLight"
+        },
+        -- Priest
+        ["PRIEST"] = {
+            ["Discipline"] = "Interface\\Icons\\Spell_Holy_PowerWordShield",
+            ["Holy"] = "Interface\\Icons\\Spell_Holy_GuardianSpirit",
+            ["Shadow"] = "Interface\\Icons\\Spell_Shadow_ShadowWordPain"
+        },
+        -- Rogue
+        ["ROGUE"] = {
+            ["Assassination"] = "Interface\\Icons\\Ability_Rogue_Eviscerate",
+            ["Outlaw"] = "Interface\\Icons\\INV_Sword_30",
+            ["Subtlety"] = "Interface\\Icons\\Ability_Stealth"
+        },
+        -- Shaman
+        ["SHAMAN"] = {
+            ["Elemental"] = "Interface\\Icons\\Spell_Nature_Lightning",
+            ["Enhancement"] = "Interface\\Icons\\Spell_Shaman_ImprovedStormstrike",
+            ["Restoration"] = "Interface\\Icons\\Spell_Nature_MagicImmunity"
+        },
+        -- Warlock
+        ["WARLOCK"] = {
+            ["Affliction"] = "Interface\\Icons\\Spell_Shadow_DeathCoil",
+            ["Demonology"] = "Interface\\Icons\\Spell_Shadow_Metamorphosis",
+            ["Destruction"] = "Interface\\Icons\\Spell_Shadow_RainOfFire"
+        },
+        -- Warrior
+        ["WARRIOR"] = {
+            ["Arms"] = "Interface\\Icons\\Ability_Warrior_SavageBlow",
+            ["Fury"] = "Interface\\Icons\\Ability_Warrior_InnerRage",
+            ["Protection"] = "Interface\\Icons\\Ability_Warrior_DefensiveStance"
+        }
+    }
+    
+    local classUpper = class:upper()
+    if specIcons[classUpper] and specIcons[classUpper][spec] then
+        return specIcons[classUpper][spec]
+    end
+    
+    return "Interface\\Icons\\INV_Misc_QuestionMark"
+end
+
 -- Saved Variables (will be automatically saved/loaded by WoW)
 WhisperMacrosDB = WhisperMacrosDB or {}
 
@@ -27,6 +122,9 @@ local function InitializeDefaults()
     if not WhisperMacrosDB.players then
         WhisperMacrosDB.players = {}
     end
+    if not WhisperMacrosDB.playerData then
+        WhisperMacrosDB.playerData = {}
+    end
     if not WhisperMacrosDB.whisperedPlayers then
         WhisperMacrosDB.whisperedPlayers = {}
     end
@@ -46,6 +144,7 @@ local mainFrame = nil
 local currentTab = 1
 local tabButtons = {}
 local tabContent = {}
+local copyFrame = nil -- Track the URL copy frame
 
 -- Function to parse player data from text input
 local function ParsePlayerData(text)
@@ -54,16 +153,10 @@ local function ParsePlayerData(text)
     
     for _, line in ipairs(lines) do
         if line and trim(line) ~= "" then
-            -- Debug: print the line being processed
-            print("Processing line: " .. line)
-            
             -- Use a more flexible approach: split by multiple whitespace characters
             -- This handles tabs, multiple spaces, or mixed whitespace
             local cleanLine = line:gsub("%s+", " ") -- Replace multiple whitespace with single space
             local words = {strsplit(" ", cleanLine)}
-            
-            print("Cleaned line: " .. cleanLine)
-            print("Words found: " .. #words)
             
             if #words >= 4 then
                 local rank = trim(words[1])
@@ -71,18 +164,36 @@ local function ParsePlayerData(text)
                 local name = trim(words[3])
                 local realm = trim(words[4])
                 
+                -- Initialize additional data variables
+                local faction, race, gender, class, spec, winrate = nil, nil, nil, nil, nil, nil
+                local wordIndex = 5
+                
                 -- Handle realm names with spaces dynamically
-                -- Check if the next word might be part of the realm name
-                -- If the next word is NOT a faction (Alliance/Horde), it's likely part of the realm name
                 if #words >= 5 then
                     local nextWord = trim(words[5])
                     -- If the next word is not a faction name, it's probably part of the realm
                     if nextWord:lower() ~= "alliance" and nextWord:lower() ~= "horde" then
                         realm = realm .. " " .. nextWord
+                        wordIndex = 6
                     end
                 end
                 
-                print("Rank: " .. rank .. ", Rating: " .. rating .. ", Name: " .. name .. ", Realm: " .. realm)
+                -- Extract additional information if available
+                if #words >= wordIndex then
+                    faction = words[wordIndex] -- Alliance/Horde
+                    if #words >= wordIndex + 1 then race = words[wordIndex + 1] end
+                    if #words >= wordIndex + 2 then gender = words[wordIndex + 2] end
+                    if #words >= wordIndex + 3 then class = words[wordIndex + 3] end
+                    if #words >= wordIndex + 4 then spec = words[wordIndex + 4] end
+                    
+                    -- Look for winrate percentage at the end
+                    for i = #words, 1, -1 do
+                        if words[i] and words[i]:match("%.%d+%%") then
+                            winrate = words[i]
+                            break
+                        end
+                    end
+                end
                 
                 -- Validate that rank and rating are numbers (basic validation)
                 if tonumber(rank) and tonumber(rating) and name ~= "" and realm ~= "" then
@@ -91,7 +202,20 @@ local function ParsePlayerData(text)
                     
                     local playerString = name .. "-" .. realm
                     table.insert(newPlayers, playerString)
-                    print("Added: " .. playerString)
+                    
+                    -- Store additional player data
+                    WhisperMacrosDB.playerData[playerString] = {
+                        rank = tonumber(rank),
+                        rating = tonumber(rating),
+                        faction = faction,
+                        race = race,
+                        gender = gender,
+                        class = class,
+                        spec = spec,
+                        winrate = winrate
+                    }
+                    
+                    print("Added: " .. playerString .. " (Rating: " .. rating .. ", Spec: " .. (spec or "Unknown") .. ", Winrate: " .. (winrate or "Unknown") .. ")")
                 else
                     print("Skipped line - invalid data format")
                 end
@@ -137,11 +261,34 @@ end
 
 -- Function to create tab buttons
 local function CreateTabButton(parent, text, index, onClick)
-    local button = CreateFrame("Button", nil, parent, "UIPanelButtonTemplate")
+    local button = CreateFrame("Button", nil, parent)
     -- Make the "Already Whispered" tab wider to accommodate the text
     local buttonWidth = (text == "Already Whispered") and 140 or 100
-    button:SetSize(buttonWidth, 25)
-    button:SetText(text)
+    button:SetSize(buttonWidth, 28)
+    
+    -- Custom styling instead of UIPanelButtonTemplate
+    local bg = button:CreateTexture(nil, "BACKGROUND")
+    bg:SetAllPoints(button)
+    bg:SetColorTexture(0.15, 0.15, 0.2, 0.8)
+    button.bg = bg
+    
+    local border = button:CreateTexture(nil, "BORDER")
+    border:SetAllPoints(button)
+    border:SetColorTexture(0.25, 0.25, 0.3, 1)
+    button.border = border
+    
+    local innerBg = button:CreateTexture(nil, "ARTWORK")
+    innerBg:SetPoint("TOPLEFT", button, "TOPLEFT", 1, -1)
+    innerBg:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", -1, 1)
+    innerBg:SetColorTexture(0.18, 0.18, 0.25, 0.9)
+    button.innerBg = innerBg
+    
+    -- Button text
+    local buttonText = button:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    buttonText:SetPoint("CENTER", button, "CENTER", 0, 0)
+    buttonText:SetText(text)
+    button.text = buttonText
+    
     -- Adjust spacing to account for wider buttons
     local spacing = (text == "Already Whispered") and 145 or 105
     local xOffset = 10
@@ -154,19 +301,40 @@ local function CreateTabButton(parent, text, index, onClick)
     elseif index == 4 then
         xOffset = 10 + 105 + 105 + 145
     end
-    button:SetPoint("TOPLEFT", parent, "TOPLEFT", xOffset, -35)
+    button:SetPoint("TOPLEFT", parent, "TOPLEFT", xOffset, -42)
+    
+    -- Hover effects
+    button:SetScript("OnEnter", function()
+        if button:IsEnabled() then
+            button.innerBg:SetColorTexture(0.25, 0.35, 0.5, 0.9)
+            button.text:SetTextColor(1, 1, 1, 1)
+        end
+    end)
+    
+    button:SetScript("OnLeave", function()
+        if button:IsEnabled() then
+            button.innerBg:SetColorTexture(0.18, 0.18, 0.25, 0.9)
+            button.text:SetTextColor(0.9, 0.9, 0.9, 1)
+        end
+    end)
     
     button:SetScript("OnClick", function()
         currentTab = index
         -- Update all tab button states
         for i, tabButton in ipairs(tabButtons) do
             if i == index then
+                -- Active tab styling
                 tabButton:Disable()
-                tabButton:SetText("|cffffffff" .. text .. "|r")
+                tabButton.innerBg:SetColorTexture(0.3, 0.5, 0.8, 1)
+                tabButton.text:SetText("|cffffffff" .. text .. "|r")
+                tabButton.text:SetTextColor(1, 1, 1, 1)
             else
+                -- Inactive tab styling
                 tabButton:Enable()
-                local originalText = tabButton:GetText():gsub("|c........", ""):gsub("|r", "")
-                tabButton:SetText(originalText)
+                tabButton.innerBg:SetColorTexture(0.18, 0.18, 0.25, 0.9)
+                local originalText = tabButton.text:GetText():gsub("|c........", ""):gsub("|r", "")
+                tabButton.text:SetText(originalText)
+                tabButton.text:SetTextColor(0.9, 0.9, 0.9, 1)
             end
         end
         onClick()
@@ -187,8 +355,8 @@ local function CreateMainInterface()
     tabButtons = {}
     tabContent = {}
     
-    -- Main frame
-    mainFrame = CreateFrame("Frame", "WhisperMacrosMainFrame", UIParent, "BasicFrameTemplateWithInset")
+    -- Main frame - Custom styled instead of BasicFrameTemplateWithInset
+    mainFrame = CreateFrame("Frame", "WhisperMacrosMainFrame", UIParent)
     mainFrame:SetSize(600, 500)
     mainFrame:SetPoint("CENTER")
     mainFrame:SetMovable(true)
@@ -196,9 +364,51 @@ local function CreateMainInterface()
     mainFrame:RegisterForDrag("LeftButton")
     mainFrame:SetScript("OnDragStart", mainFrame.StartMoving)
     mainFrame:SetScript("OnDragStop", mainFrame.StopMovingOrSizing)
+    mainFrame:SetFrameStrata("DIALOG")
+    
+    -- Custom background with gradient effect
+    local bg = mainFrame:CreateTexture(nil, "BACKGROUND")
+    bg:SetAllPoints(mainFrame)
+    bg:SetColorTexture(0.05, 0.05, 0.08, 0.95) -- Dark blue-gray with transparency
+    
+    -- Main border
+    local border = mainFrame:CreateTexture(nil, "BORDER")
+    border:SetAllPoints(mainFrame)
+    border:SetColorTexture(0.2, 0.25, 0.35, 1) -- Lighter border
+    
+    -- Inner area (inset)
+    local innerBg = mainFrame:CreateTexture(nil, "ARTWORK")
+    innerBg:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", 2, -2)
+    innerBg:SetPoint("BOTTOMRIGHT", mainFrame, "BOTTOMRIGHT", -2, 2)
+    innerBg:SetColorTexture(0.08, 0.08, 0.12, 0.98)
+    
+    -- Top accent line
+    local topAccent = mainFrame:CreateTexture(nil, "OVERLAY")
+    topAccent:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", 2, -2)
+    topAccent:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", -2, -2)
+    topAccent:SetHeight(2)
+    topAccent:SetColorTexture(0.3, 0.6, 1, 0.8) -- Blue accent
+    
+    -- Title bar area
+    local titleBg = mainFrame:CreateTexture(nil, "ARTWORK")
+    titleBg:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", 2, -2)
+    titleBg:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", -2, -2)
+    titleBg:SetHeight(35)
+    titleBg:SetColorTexture(0.12, 0.12, 0.18, 0.9)
+    
+    -- Close button (X)
+    local closeButton = CreateFrame("Button", nil, mainFrame)
+    closeButton:SetSize(20, 20)
+    closeButton:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", -8, -8)
+    closeButton:SetNormalTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Up")
+    closeButton:SetPushedTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Down")
+    closeButton:SetHighlightTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Highlight", "ADD")
+    closeButton:SetScript("OnClick", function() mainFrame:Hide() end)
+    
+    -- Modern title text
     mainFrame.title = mainFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlightLarge")
-    mainFrame.title:SetPoint("TOP", mainFrame, "TOP", 0, -5)
-    mainFrame.title:SetText("Whisper Macros")
+    mainFrame.title:SetPoint("TOP", mainFrame, "TOP", 0, -12)
+    mainFrame.title:SetText("|cff4da6ffWhisper Macros|r") -- Blue colored title
     
     -- Tab buttons
     local addPlayersTab = CreateTabButton(mainFrame, "Add Players", 1, function() ShowAddPlayersTab() end)
@@ -222,15 +432,33 @@ local function CreateMainInterface()
     tipsLabel:SetPoint("RIGHT", tipsCheckbox, "LEFT", -5, 0)
     tipsLabel:SetText("Tips")
     
-    -- Content area
+    -- Content area with modern styling
     mainFrame.content = CreateFrame("Frame", nil, mainFrame)
-    mainFrame.content:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", 15, -70)
-    mainFrame.content:SetPoint("BOTTOMRIGHT", mainFrame, "BOTTOMRIGHT", -15, 15)
+    mainFrame.content:SetPoint("TOPLEFT", mainFrame, "TOPLEFT", 8, -78)
+    mainFrame.content:SetPoint("BOTTOMRIGHT", mainFrame, "BOTTOMRIGHT", -8, 8)
+    
+    -- Content background
+    local contentBg = mainFrame.content:CreateTexture(nil, "BACKGROUND")
+    contentBg:SetAllPoints(mainFrame.content)
+    contentBg:SetColorTexture(0.06, 0.06, 0.1, 0.95)
+    
+    -- Content border
+    local contentBorder = mainFrame.content:CreateTexture(nil, "BORDER")
+    contentBorder:SetAllPoints(mainFrame.content)
+    contentBorder:SetColorTexture(0.2, 0.2, 0.3, 0.8)
+    
+    -- Content inner area
+    local contentInner = mainFrame.content:CreateTexture(nil, "ARTWORK")
+    contentInner:SetPoint("TOPLEFT", mainFrame.content, "TOPLEFT", 1, -1)
+    contentInner:SetPoint("BOTTOMRIGHT", mainFrame.content, "BOTTOMRIGHT", -1, 1)
+    contentInner:SetColorTexture(0.08, 0.08, 0.13, 0.98)
     
     -- Show first tab by default and set its state
     currentTab = 1
     addPlayersTab:Disable()
-    addPlayersTab:SetText("|cffffffff" .. "Add Players" .. "|r")
+    addPlayersTab.innerBg:SetColorTexture(0.3, 0.5, 0.8, 1)
+    addPlayersTab.text:SetText("|cffffffff" .. "Add Players" .. "|r")
+    addPlayersTab.text:SetTextColor(1, 1, 1, 1)
     ShowAddPlayersTab()
 end
 
@@ -536,6 +764,68 @@ local function StopAndHideBorders(animGroups, borderFrame)
     if borderFrame then borderFrame:Hide() end
 end
 
+-- Function to create modern styled buttons
+local function CreateModernButton(parent, width, height, text)
+    local button = CreateFrame("Button", nil, parent)
+    button:SetSize(width, height)
+    
+    -- Button background layers
+    local bg = button:CreateTexture(nil, "BACKGROUND")
+    bg:SetAllPoints(button)
+    bg:SetColorTexture(0.15, 0.15, 0.2, 0.9)
+    button.bg = bg
+    
+    local border = button:CreateTexture(nil, "BORDER")
+    border:SetAllPoints(button)
+    border:SetColorTexture(0.3, 0.4, 0.6, 1)
+    button.border = border
+    
+    local innerBg = button:CreateTexture(nil, "ARTWORK")
+    innerBg:SetPoint("TOPLEFT", button, "TOPLEFT", 1, -1)
+    innerBg:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", -1, 1)
+    innerBg:SetColorTexture(0.2, 0.25, 0.35, 0.95)
+    button.innerBg = innerBg
+    
+    -- Gradient effect
+    local gradient = button:CreateTexture(nil, "OVERLAY")
+    gradient:SetPoint("TOPLEFT", innerBg, "TOPLEFT", 0, 0)
+    gradient:SetPoint("BOTTOMRIGHT", innerBg, "BOTTOMRIGHT", 0, 0)
+    gradient:SetColorTexture(0.25, 0.35, 0.5, 0.3)
+    button.gradient = gradient
+    
+    -- Button text
+    local buttonText = button:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    buttonText:SetPoint("CENTER", button, "CENTER", 0, 0)
+    buttonText:SetText(text)
+    buttonText:SetTextColor(0.9, 0.9, 0.9, 1)
+    button.text = buttonText
+    
+    -- Hover and click effects
+    button:SetScript("OnEnter", function()
+        button.innerBg:SetColorTexture(0.3, 0.4, 0.6, 0.95)
+        button.gradient:SetColorTexture(0.4, 0.5, 0.7, 0.4)
+        button.text:SetTextColor(1, 1, 1, 1)
+    end)
+    
+    button:SetScript("OnLeave", function()
+        button.innerBg:SetColorTexture(0.2, 0.25, 0.35, 0.95)
+        button.gradient:SetColorTexture(0.25, 0.35, 0.5, 0.3)
+        button.text:SetTextColor(0.9, 0.9, 0.9, 1)
+    end)
+    
+    button:SetScript("OnMouseDown", function()
+        button.innerBg:SetColorTexture(0.15, 0.2, 0.3, 0.95)
+        button.gradient:SetColorTexture(0.2, 0.3, 0.4, 0.5)
+    end)
+    
+    button:SetScript("OnMouseUp", function()
+        button.innerBg:SetColorTexture(0.3, 0.4, 0.6, 0.95)
+        button.gradient:SetColorTexture(0.4, 0.5, 0.7, 0.4)
+    end)
+    
+    return button
+end
+
 -- Add Players Tab
 function ShowAddPlayersTab()
     local contentFrame = ShowTabContent(1)
@@ -552,10 +842,21 @@ function ShowAddPlayersTab()
     scrollFrame:SetPoint("TOPLEFT", instructions, "BOTTOMLEFT", 0, -10)
     scrollFrame:SetSize(540, 200)
     
-    -- Add background to scroll frame
+    -- Add background to scroll frame with modern styling
     local bg = scrollFrame:CreateTexture(nil, "BACKGROUND")
     bg:SetAllPoints(scrollFrame)
-    bg:SetColorTexture(0.1, 0.1, 0.1, 0.8)
+    bg:SetColorTexture(0.05, 0.05, 0.08, 0.95)
+    
+    -- Modern border for scroll frame
+    local border = scrollFrame:CreateTexture(nil, "BORDER")
+    border:SetAllPoints(scrollFrame)
+    border:SetColorTexture(0.2, 0.25, 0.35, 0.8)
+    
+    -- Inner background
+    local innerBg = scrollFrame:CreateTexture(nil, "ARTWORK")
+    innerBg:SetPoint("TOPLEFT", scrollFrame, "TOPLEFT", 2, -2)
+    innerBg:SetPoint("BOTTOMRIGHT", scrollFrame, "BOTTOMRIGHT", -2, 2)
+    innerBg:SetColorTexture(0.08, 0.08, 0.12, 0.98)
     
     local editBox = CreateFrame("EditBox", nil, scrollFrame)
     editBox:SetSize(520, 200)
@@ -563,10 +864,11 @@ function ShowAddPlayersTab()
     editBox:SetAutoFocus(false)
     editBox:SetFontObject("ChatFontNormal")
     editBox:SetTextColor(1, 1, 1, 1) -- White text
+    editBox:SetTextInsets(8, 8, 8, 8) -- Add padding inside the edit box
     editBox:SetScript("OnEscapePressed", function() editBox:ClearFocus() end)
     
     -- Add placeholder text functionality
-    local placeholderText = "Paste rows of player data here...\n\nExample:\n125 2725 Rudar Sargeras Alliance Night Elf Female Druid Balance Stay Hydrated 242 - 130 65.1%\n125 2725 Rudar Sargeras Alliance Night Elf Female Druid Balance Stay Hydrated 242 - 130 65.1%\n"
+    local placeholderText = "Paste rows of player data here...\n\nExample:\n125 2725 Rudar Sargeras Alliance Night Elf Female Druid Balance Stay Hydrated 242 - 130 65.1%"
     
     local function UpdatePlaceholder()
         if editBox:GetText() == "" then
@@ -590,19 +892,25 @@ function ShowAddPlayersTab()
     
     scrollFrame:SetScrollChild(editBox)
     
-    -- Find Players button (opens website) - positioned first
-    local findButton = CreateFrame("Button", nil, contentFrame, "UIPanelButtonTemplate")
-    findButton:SetSize(120, 30)
+    -- Find Players button (opens website) - positioned first with modern styling
+    local findButton = CreateModernButton(contentFrame, 120, 32, "Find Players")
     findButton:SetPoint("TOPLEFT", scrollFrame, "BOTTOMLEFT", 0, -10)
-    findButton:SetText("Find Players")
     findButton:SetScript("OnClick", function()
+        -- Check if copy frame already exists and is shown
+        if copyFrame and copyFrame:IsShown() then
+            -- Bring existing frame to front
+            copyFrame:Raise()
+            return
+        end
+        
         local url = "https://www.pvpleaderboard.com/leaderboards/filter?leaderboard=3v3&region=US"
         
-        -- Create a visible frame for copying URL
-        local copyFrame = CreateFrame("Frame", nil, UIParent, "BasicFrameTemplateWithInset")
+        -- Create a visible frame for copying URL with modern styling
+        copyFrame = CreateFrame("Frame", nil, UIParent)
         copyFrame:SetSize(520, 180)
         copyFrame:SetPoint("CENTER")
-        copyFrame:SetFrameStrata("DIALOG")
+        copyFrame:SetFrameStrata("FULLSCREEN_DIALOG")
+        copyFrame:SetFrameLevel(1000)
         copyFrame:SetToplevel(true)
         copyFrame:SetMovable(true)
         copyFrame:EnableMouse(true)
@@ -610,29 +918,72 @@ function ShowAddPlayersTab()
         copyFrame:SetScript("OnDragStart", copyFrame.StartMoving)
         copyFrame:SetScript("OnDragStop", copyFrame.StopMovingOrSizing)
         
-        -- Title (moved up)
+        -- Modern frame styling
+        local bg = copyFrame:CreateTexture(nil, "BACKGROUND")
+        bg:SetAllPoints(copyFrame)
+        bg:SetColorTexture(0.05, 0.05, 0.08, 0.95)
+        
+        local border = copyFrame:CreateTexture(nil, "BORDER")
+        border:SetAllPoints(copyFrame)
+        border:SetColorTexture(0.2, 0.25, 0.35, 1)
+        
+        local innerBg = copyFrame:CreateTexture(nil, "ARTWORK")
+        innerBg:SetPoint("TOPLEFT", copyFrame, "TOPLEFT", 2, -2)
+        innerBg:SetPoint("BOTTOMRIGHT", copyFrame, "BOTTOMRIGHT", -2, 2)
+        innerBg:SetColorTexture(0.08, 0.08, 0.12, 0.98)
+        
+        -- Top accent line
+        local topAccent = copyFrame:CreateTexture(nil, "OVERLAY")
+        topAccent:SetPoint("TOPLEFT", copyFrame, "TOPLEFT", 2, -2)
+        topAccent:SetPoint("TOPRIGHT", copyFrame, "TOPRIGHT", -2, -2)
+        topAccent:SetHeight(2)
+        topAccent:SetColorTexture(0.3, 0.6, 1, 0.8)
+        
+        -- Title bar area
+        local titleBg = copyFrame:CreateTexture(nil, "ARTWORK")
+        titleBg:SetPoint("TOPLEFT", copyFrame, "TOPLEFT", 2, -2)
+        titleBg:SetPoint("TOPRIGHT", copyFrame, "TOPRIGHT", -2, -2)
+        titleBg:SetHeight(35)
+        titleBg:SetColorTexture(0.12, 0.12, 0.18, 0.9)
+        
+        -- Close button (X)
+        local closeButton = CreateFrame("Button", nil, copyFrame)
+        closeButton:SetSize(20, 20)
+        closeButton:SetPoint("TOPRIGHT", copyFrame, "TOPRIGHT", -8, -8)
+        closeButton:SetNormalTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Up")
+        closeButton:SetPushedTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Down")
+        closeButton:SetHighlightTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Highlight", "ADD")
+        closeButton:SetScript("OnClick", function() 
+            copyFrame:Hide() 
+            copyFrame = nil
+        end)
+        
+        -- Title
         copyFrame.title = copyFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlightLarge")
-        copyFrame.title:SetPoint("TOP", copyFrame, "TOP", 0, -5)
-        copyFrame.title:SetText("PvP Leaderboard URL")
+        copyFrame.title:SetPoint("TOP", copyFrame, "TOP", 0, -12)
+        copyFrame.title:SetText("|cff4da6ffPvP Leaderboard URL|r")
         
         -- Instructions
         local instructions = copyFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-        instructions:SetPoint("TOPLEFT", copyFrame, "TOPLEFT", 15, -35)
+        instructions:SetPoint("TOPLEFT", copyFrame, "TOPLEFT", 15, -45)
         instructions:SetText("Select all text below and copy it (Ctrl+C):")
         
         -- Create edit box with the URL
         local copyEditBox = CreateFrame("EditBox", nil, copyFrame, "InputBoxTemplate")
         copyEditBox:SetSize(480, 25)
         copyEditBox:SetPoint("TOPLEFT", instructions, "BOTTOMLEFT", 0, -10)
+        copyEditBox:SetTextInsets(6, 6, 4, 4) -- Add padding inside the edit box
         copyEditBox:SetText(url)
         copyEditBox:SetAutoFocus(true)
         copyEditBox:HighlightText()
         copyEditBox:SetCursorPosition(0)
         copyEditBox:SetScript("OnEscapePressed", function()
             copyFrame:Hide()
+            copyFrame = nil
         end)
         copyEditBox:SetScript("OnEnterPressed", function()
             copyFrame:Hide()
+            copyFrame = nil
         end)
         
         -- More instructions
@@ -653,11 +1004,27 @@ function ShowAddPlayersTab()
         print("LFG Arena Tool: Copy the URL from the dialog and paste it in your browser!")
     end)
     
-    -- Parse button - positioned to the right of Find Players button
-    local parseButton = CreateFrame("Button", nil, contentFrame, "UIPanelButtonTemplate")
-    parseButton:SetSize(120, 30)
+    -- Parse button - positioned to the right of Find Players button with modern styling
+    local parseButton = CreateModernButton(contentFrame, 120, 32, "Parse Players")
     parseButton:SetPoint("LEFT", findButton, "RIGHT", 10, 0)
-    parseButton:SetText("Parse Players")
+    
+    -- Function to update parse button color based on text content
+    local function UpdateParseButtonState()
+        local text = editBox:GetText()
+        local hasValidContent = text and trim(text) ~= "" and text ~= placeholderText
+        
+        if hasValidContent then
+            -- Green color when text is available to parse
+            parseButton.innerBg:SetColorTexture(0.2, 0.6, 0.2, 0.95)
+            parseButton.gradient:SetColorTexture(0.3, 0.7, 0.3, 0.4)
+            parseButton.border:SetColorTexture(0.3, 0.7, 0.3, 1)
+        else
+            -- Default color when no text
+            parseButton.innerBg:SetColorTexture(0.2, 0.25, 0.35, 0.95)
+            parseButton.gradient:SetColorTexture(0.25, 0.35, 0.5, 0.3)
+            parseButton.border:SetColorTexture(0.3, 0.4, 0.6, 1)
+        end
+    end
     parseButton:SetScript("OnClick", function()
         local text = editBox:GetText()
         -- Don't parse if it's just the placeholder text
@@ -686,10 +1053,21 @@ function ShowAddPlayersTab()
     whisperScrollFrame:SetPoint("TOPLEFT", whisperLabel, "BOTTOMLEFT", 0, -5)
     whisperScrollFrame:SetSize(540, 80)
     
-    -- Add background to whisper scroll frame
+    -- Add background to whisper scroll frame with modern styling
     local whisperBg = whisperScrollFrame:CreateTexture(nil, "BACKGROUND")
     whisperBg:SetAllPoints(whisperScrollFrame)
-    whisperBg:SetColorTexture(0.1, 0.1, 0.1, 0.8)
+    whisperBg:SetColorTexture(0.05, 0.05, 0.08, 0.95)
+    
+    -- Modern border for whisper scroll frame
+    local whisperBorder = whisperScrollFrame:CreateTexture(nil, "BORDER")
+    whisperBorder:SetAllPoints(whisperScrollFrame)
+    whisperBorder:SetColorTexture(0.2, 0.25, 0.35, 0.8)
+    
+    -- Inner background for whisper scroll frame
+    local whisperInnerBg = whisperScrollFrame:CreateTexture(nil, "ARTWORK")
+    whisperInnerBg:SetPoint("TOPLEFT", whisperScrollFrame, "TOPLEFT", 2, -2)
+    whisperInnerBg:SetPoint("BOTTOMRIGHT", whisperScrollFrame, "BOTTOMRIGHT", -2, 2)
+    whisperInnerBg:SetColorTexture(0.08, 0.08, 0.12, 0.98)
     
     local whisperEditBox = CreateFrame("EditBox", nil, whisperScrollFrame)
     whisperEditBox:SetSize(520, 80)
@@ -697,6 +1075,7 @@ function ShowAddPlayersTab()
     whisperEditBox:SetAutoFocus(false)
     whisperEditBox:SetFontObject("ChatFontNormal")
     whisperEditBox:SetTextColor(1, 1, 1, 1) -- White text
+    whisperEditBox:SetTextInsets(8, 8, 8, 8) -- Add padding inside the edit box
     whisperEditBox:SetText(WhisperMacrosDB.whisperMessage)
     whisperEditBox:SetScript("OnEscapePressed", function() whisperEditBox:ClearFocus() end)
     whisperEditBox:SetScript("OnTextChanged", function()
@@ -929,34 +1308,83 @@ function ShowPlayerListTab()
     checkboxLabel:SetText("Remove players after whispering")
     
     -- Clear list button
-    local clearListButton = CreateFrame("Button", nil, header, "UIPanelButtonTemplate")
-    clearListButton:SetSize(100, 25)
+    local clearListButton = CreateModernButton(header, 100, 25, "Clear List")
     clearListButton:SetPoint("TOPRIGHT", header, "TOPRIGHT", 0, -5)
-    clearListButton:SetText("Clear List")
     clearListButton:SetScript("OnClick", function()
         WhisperMacrosDB.players = {}
         WhisperMacrosDB.whisperedPlayers = {}
+        WhisperMacrosDB.playerData = {}
         ShowPlayerListTab() -- Refresh
     end)
     
     -- Player list scroll frame
     local scrollFrame = CreateFrame("ScrollFrame", nil, contentFrame, "UIPanelScrollFrameTemplate")
-    scrollFrame:SetPoint("TOPLEFT", header, "BOTTOMLEFT", 0, -10)
-    scrollFrame:SetSize(540, 350)
+    scrollFrame:SetPoint("TOPLEFT", header, "BOTTOMLEFT", 0, -45)
+    scrollFrame:SetSize(540, 315)
+    
+    -- Custom scroll speed handling
+    local function CustomScrollHandler(self, delta)
+        local scrollStep = 15 -- Smaller step = slower scroll (default is usually 20-30)
+        local currentScroll = self:GetVerticalScroll()
+        local maxScroll = self:GetVerticalScrollRange()
+        
+        -- Calculate new scroll position
+        local newScroll = currentScroll - (delta * scrollStep)
+        newScroll = math.max(0, math.min(newScroll, maxScroll))
+        
+        -- Apply smooth scroll
+        self:SetVerticalScroll(newScroll)
+    end
+    
+    -- Enable mouse wheel scrolling with custom speed
+    scrollFrame:EnableMouseWheel(true)
+    scrollFrame:SetScript("OnMouseWheel", CustomScrollHandler)
+    
+    -- Column headers
+    local headerFrame = CreateFrame("Frame", nil, contentFrame)
+    headerFrame:SetPoint("TOPLEFT", header, "BOTTOMLEFT", 0, -10)
+    headerFrame:SetSize(540, 25)
+    
+    local nameHeader = headerFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    nameHeader:SetPoint("LEFT", headerFrame, "LEFT", 5, 0)
+    nameHeader:SetText("|cffffd700Player|r") -- Bold gold color
+    
+    local ratingHeader = headerFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    ratingHeader:SetPoint("LEFT", headerFrame, "LEFT", 265, 0)
+    ratingHeader:SetText("|cffffd700Rating|r") -- Bold gold color
+    
+    local specHeader = headerFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    specHeader:SetPoint("LEFT", headerFrame, "LEFT", 335, 0)
+    specHeader:SetText("|cffffd700Spec|r") -- Bold gold color
+    
+    local winrateHeader = headerFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    winrateHeader:SetPoint("LEFT", headerFrame, "LEFT", 385, 0)
+    winrateHeader:SetText("|cffffd700Winrate|r") -- Bold gold color
+    
+    -- Horizontal separator line
+    local separatorLine = headerFrame:CreateTexture(nil, "OVERLAY")
+    separatorLine:SetPoint("BOTTOMLEFT", headerFrame, "BOTTOMLEFT", 0, -2)
+    separatorLine:SetPoint("BOTTOMRIGHT", headerFrame, "BOTTOMRIGHT", 0, -2)
+    separatorLine:SetHeight(1)
+    separatorLine:SetColorTexture(0.5, 0.5, 0.5, 0.8) -- Gray line
     
     local content = CreateFrame("Frame", nil, scrollFrame)
     content:SetSize(520, 1)
     scrollFrame:SetScrollChild(content)
     
     -- Display players
-    local yOffset = 0
+    local yOffset = -10 -- Add spacing before first row
     for i, player in ipairs(WhisperMacrosDB.players) do
         local playerFrame = CreateFrame("Frame", nil, content)
-        playerFrame:SetSize(520, 20)
+        playerFrame:SetSize(520, 25)
         playerFrame:SetPoint("TOPLEFT", content, "TOPLEFT", 0, yOffset)
         
-        local playerText = playerFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-        playerText:SetPoint("LEFT", playerFrame, "LEFT", 5, 0)
+        -- Get player data
+        local playerData = WhisperMacrosDB.playerData[player] or {}
+        local rating = playerData.rating or "?"
+        local spec = playerData.spec or "Unknown"
+        local class = playerData.class or "Unknown"
+        local winrate = playerData.winrate or "?"
         
         -- Check if player was whispered
         local wasWhispered = false
@@ -967,26 +1395,78 @@ function ShowPlayerListTab()
             end
         end
         
+        -- Player name
+        local playerText = playerFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+        playerText:SetPoint("LEFT", playerFrame, "LEFT", 5, 0)
+        playerText:SetWidth(250)
+        playerText:SetJustifyH("LEFT")
+        
         if wasWhispered then
-            playerText:SetText("|cff888888" .. player .. " (whispered)|r")
+            playerText:SetText("|cff888888" .. player .. "|r")
         else
             playerText:SetText(player)
         end
         
+        -- Player rating
+        local ratingText = playerFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+        ratingText:SetPoint("LEFT", playerFrame, "LEFT", 265, 0)
+        ratingText:SetWidth(60)
+        ratingText:SetJustifyH("LEFT")
+        
+        if wasWhispered then
+            ratingText:SetText("|cff888888" .. rating .. "|r")
+        else
+            ratingText:SetText(rating)
+        end
+        
+        -- Spec icon (positioned to align with Spec header)
+        local specIcon = playerFrame:CreateTexture(nil, "ARTWORK")
+        specIcon:SetSize(20, 20)
+        specIcon:SetPoint("LEFT", playerFrame, "LEFT", 335, 0)
+        specIcon:SetTexture(GetSpecIcon(class, spec))
+        if wasWhispered then
+            specIcon:SetVertexColor(0.5, 0.5, 0.5) -- Dim the icon for whispered players
+        end
+        
+        -- Winrate text (positioned to align with Winrate header)
+        local winrateText = playerFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+        winrateText:SetPoint("LEFT", playerFrame, "LEFT", 385, 0)
+        winrateText:SetWidth(60)
+        winrateText:SetJustifyH("LEFT")
+        if wasWhispered then
+            winrateText:SetText("|cff888888" .. winrate .. "|r")
+        else
+            -- Color code winrate
+            local winrateColor = "|cffffffff" -- Default white
+            if winrate ~= "?" then
+                local percentage = tonumber(winrate:match("(%d+%.?%d*)"))
+                if percentage then
+                    if percentage >= 58 then
+                        winrateColor = "|cff00ff00" -- Green for high winrate (58%+)
+                    elseif percentage >= 50 then
+                        winrateColor = "|cffffff00" -- Yellow for medium winrate (50-57%)
+                    else
+                        winrateColor = "|cffff0000" -- Red for low winrate (below 50%)
+                    end
+                end
+            end
+            winrateText:SetText(winrateColor .. winrate .. "|r")
+        end
+        
         -- Remove button
-        local removeButton = CreateFrame("Button", nil, playerFrame, "UIPanelButtonTemplate")
-        removeButton:SetSize(60, 18)
+        local removeButton = CreateModernButton(playerFrame, 60, 18, "Remove")
         removeButton:SetPoint("RIGHT", playerFrame, "RIGHT", -5, 0)
-        removeButton:SetText("Remove")
         removeButton:SetScript("OnClick", function()
+            -- Also remove from playerData when removing from list
+            WhisperMacrosDB.playerData[player] = nil
             table.remove(WhisperMacrosDB.players, i)
             ShowPlayerListTab() -- Refresh
         end)
         
-        yOffset = yOffset - 25
+        yOffset = yOffset - 30
     end
     
-    content:SetHeight(math.max(1, #WhisperMacrosDB.players * 25))
+    content:SetHeight(math.max(20, #WhisperMacrosDB.players * 30 + 10)) -- Add 10px for spacing
 end
 
 -- Already Whispered Tab
@@ -1005,10 +1485,8 @@ function ShowWhisperedTab()
     playerCount:SetText("Already Whispered: " .. #WhisperMacrosDB.whisperedPlayers)
     
     -- Clear whispered list button
-    local clearWhisperedButton = CreateFrame("Button", nil, header, "UIPanelButtonTemplate")
-    clearWhisperedButton:SetSize(120, 25)
+    local clearWhisperedButton = CreateModernButton(header, 120, 25, "Clear Whispered")
     clearWhisperedButton:SetPoint("TOPRIGHT", header, "TOPRIGHT", 0, -5)
-    clearWhisperedButton:SetText("Clear Whispered")
     clearWhisperedButton:SetScript("OnClick", function()
         WhisperMacrosDB.whisperedPlayers = {}
         ShowWhisperedTab() -- Refresh
@@ -1016,38 +1494,113 @@ function ShowWhisperedTab()
     
     -- Whispered players list scroll frame
     local scrollFrame = CreateFrame("ScrollFrame", nil, contentFrame, "UIPanelScrollFrameTemplate")
-    scrollFrame:SetPoint("TOPLEFT", header, "BOTTOMLEFT", 0, -10)
-    scrollFrame:SetSize(540, 350)
+    scrollFrame:SetPoint("TOPLEFT", header, "BOTTOMLEFT", 0, -50)
+    scrollFrame:SetSize(540, 310)
+    
+    -- Custom scroll speed handling for whispered tab
+    local function CustomScrollHandler(self, delta)
+        local scrollStep = 15 -- Smaller step = slower scroll
+        local currentScroll = self:GetVerticalScroll()
+        local maxScroll = self:GetVerticalScrollRange()
+        
+        -- Calculate new scroll position
+        local newScroll = currentScroll - (delta * scrollStep)
+        newScroll = math.max(0, math.min(newScroll, maxScroll))
+        
+        -- Apply smooth scroll
+        self:SetVerticalScroll(newScroll)
+    end
+    
+    -- Enable mouse wheel scrolling with custom speed
+    scrollFrame:EnableMouseWheel(true)
+    scrollFrame:SetScript("OnMouseWheel", CustomScrollHandler)
+    
+    -- Column headers for whispered tab
+    local headerFrame = CreateFrame("Frame", nil, contentFrame)
+    headerFrame:SetPoint("TOPLEFT", header, "BOTTOMLEFT", 0, -10)
+    headerFrame:SetSize(540, 25)
+    
+    local nameHeader = headerFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    nameHeader:SetPoint("LEFT", headerFrame, "LEFT", 5, 0)
+    nameHeader:SetText("|cffffd700Player|r") -- Bold gold color
+    
+    local ratingHeader = headerFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    ratingHeader:SetPoint("LEFT", headerFrame, "LEFT", 265, 0)
+    ratingHeader:SetText("|cffffd700Rating|r") -- Bold gold color
+    
+    local specHeader = headerFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    specHeader:SetPoint("LEFT", headerFrame, "LEFT", 335, 0)
+    specHeader:SetText("|cffffd700Spec|r") -- Bold gold color
+    
+    local winrateHeader = headerFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    winrateHeader:SetPoint("LEFT", headerFrame, "LEFT", 385, 0)
+    winrateHeader:SetText("|cffffd700Winrate|r") -- Bold gold color
+    
+    -- Horizontal separator line
+    local separatorLine = headerFrame:CreateTexture(nil, "OVERLAY")
+    separatorLine:SetPoint("BOTTOMLEFT", headerFrame, "BOTTOMLEFT", 0, -2)
+    separatorLine:SetPoint("BOTTOMRIGHT", headerFrame, "BOTTOMRIGHT", 0, -2)
+    separatorLine:SetHeight(1)
+    separatorLine:SetColorTexture(0.5, 0.5, 0.5, 0.8) -- Gray line
     
     local content = CreateFrame("Frame", nil, scrollFrame)
     content:SetSize(520, 1)
     scrollFrame:SetScrollChild(content)
     
     -- Display whispered players
-    local yOffset = 0
+    local yOffset = -10 -- Add spacing before first row
     for i, player in ipairs(WhisperMacrosDB.whisperedPlayers) do
         local playerFrame = CreateFrame("Frame", nil, content)
-        playerFrame:SetSize(520, 20)
+        playerFrame:SetSize(520, 25)
         playerFrame:SetPoint("TOPLEFT", content, "TOPLEFT", 0, yOffset)
         
+        -- Get player data
+        local playerData = WhisperMacrosDB.playerData[player] or {}
+        local rating = playerData.rating or "?"
+        local spec = playerData.spec or "Unknown"
+        local class = playerData.class or "Unknown"
+        local winrate = playerData.winrate or "?"
+        
+        -- Player name
         local playerText = playerFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
         playerText:SetPoint("LEFT", playerFrame, "LEFT", 5, 0)
+        playerText:SetWidth(250)
+        playerText:SetJustifyH("LEFT")
         playerText:SetText("|cff888888" .. player .. "|r")
         
+        -- Player rating
+        local ratingText = playerFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+        ratingText:SetPoint("LEFT", playerFrame, "LEFT", 265, 0)
+        ratingText:SetWidth(60)
+        ratingText:SetJustifyH("LEFT")
+        ratingText:SetText("|cff888888" .. rating .. "|r")
+        
+        -- Spec icon (positioned to align with Spec header)
+        local specIcon = playerFrame:CreateTexture(nil, "ARTWORK")
+        specIcon:SetSize(20, 20)
+        specIcon:SetPoint("LEFT", playerFrame, "LEFT", 335, 0)
+        specIcon:SetTexture(GetSpecIcon(class, spec))
+        specIcon:SetVertexColor(0.5, 0.5, 0.5) -- Dim the icon for whispered players
+        
+        -- Winrate text (positioned to align with Winrate header)
+        local winrateText = playerFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+        winrateText:SetPoint("LEFT", playerFrame, "LEFT", 385, 0)
+        winrateText:SetWidth(60)
+        winrateText:SetJustifyH("LEFT")
+        winrateText:SetText("|cff888888" .. winrate .. "|r")
+        
         -- Remove button
-        local removeButton = CreateFrame("Button", nil, playerFrame, "UIPanelButtonTemplate")
-        removeButton:SetSize(60, 18)
+        local removeButton = CreateModernButton(playerFrame, 60, 18, "Remove")
         removeButton:SetPoint("RIGHT", playerFrame, "RIGHT", -5, 0)
-        removeButton:SetText("Remove")
         removeButton:SetScript("OnClick", function()
             table.remove(WhisperMacrosDB.whisperedPlayers, i)
             ShowWhisperedTab() -- Refresh
         end)
         
-        yOffset = yOffset - 25
+        yOffset = yOffset - 30
     end
     
-    content:SetHeight(math.max(1, #WhisperMacrosDB.whisperedPlayers * 25))
+    content:SetHeight(math.max(20, #WhisperMacrosDB.whisperedPlayers * 30 + 10)) -- Add 10px for spacing
 end
 
 
@@ -1105,10 +1658,6 @@ function ShowHelpTab()
     end
 end
 
-
-
-
-
 -- Slash command handlers
 SLASH_LFG1 = "/lfg"
 SlashCmdList["LFG"] = function(msg)
@@ -1125,7 +1674,7 @@ end
 local function OnAddonLoaded(self, event, addonName)
     if addonName == "WhisperMacros" then
         InitializeDefaults()
-        print("Whisper Macros loaded! Use /lfg to open interface, /lfg w to whisper players")
+        print("|cff4da6ffWhisper Macros|r |cff00ff00loaded!|r Use |cffffd700/lfg|r to open interface, |cffffd700/lfg w|r to whisper players")
     end
 end
 
