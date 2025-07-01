@@ -16,87 +16,95 @@ local function GetSpecIcon(class, spec)
     local specIcons = {
         -- Death Knight
         ["DEATHKNIGHT"] = {
-            ["Blood"] = "Interface\\Icons\\Spell_Deathknight_BloodPresence",
-            ["Frost"] = "Interface\\Icons\\Spell_Deathknight_FrostPresence",
-            ["Unholy"] = "Interface\\Icons\\Spell_Deathknight_UnholyPresence"
+            ["Blood"] = "Interface\\Icons\\spell_deathknight_bloodpresence",
+            ["Frost"] = "Interface\\Icons\\spell_deathknight_frostpresence",
+            ["Unholy"] = "Interface\\Icons\\spell_deathknight_unholypresence"
         },
         -- Demon Hunter
         ["DEMONHUNTER"] = {
-            ["Havoc"] = "Interface\\Icons\\Ability_DemonHunter_SpecDPS",
-            ["Vengeance"] = "Interface\\Icons\\Ability_DemonHunter_SpecTank"
+            ["Havoc"] = "Interface\\Icons\\ability_demonhunter_specdps",
+            ["Vengeance"] = "Interface\\Icons\\ability_demonhunter_spectank"
         },
         -- Druid
         ["DRUID"] = {
-            ["Balance"] = "Interface\\Icons\\Spell_Nature_StarFall",
-            ["Feral"] = "Interface\\Icons\\Ability_Druid_CatForm",
-            ["Guardian"] = "Interface\\Icons\\Ability_Racial_BearForm",
-            ["Restoration"] = "Interface\\Icons\\Spell_Nature_HealingTouch"
+            ["Balance"] = "Interface\\Icons\\spell_nature_starfall",
+            ["Feral"] = "Interface\\Icons\\ability_druid_catform",
+            ["Guardian"] = "Interface\\Icons\\ability_racial_bearform",
+            ["Restoration"] = "Interface\\Icons\\spell_nature_healingtouch"
         },
         -- Evoker
         ["EVOKER"] = {
-            ["Devastation"] = "Interface\\Icons\\ClassIcon_Evoker_Devastation",
-            ["Preservation"] = "Interface\\Icons\\ClassIcon_Evoker_Preservation",
-            ["Augmentation"] = "Interface\\Icons\\ClassIcon_Evoker_Augmentation"
+            ["Devastation"] = "Interface\\Icons\\classicon_evoker_devastation",
+            ["Preservation"] = "Interface\\Icons\\classicon_evoker_preservation",
+            ["Augmentation"] = "Interface\\Icons\\classicon_evoker_augmentation"
         },
         -- Hunter
         ["HUNTER"] = {
-            ["Beast"] = "Interface\\Icons\\Ability_Hunter_BeastMastery",
-            ["Marksmanship"] = "Interface\\Icons\\Ability_Hunter_FocusedAim",
-            ["Survival"] = "Interface\\Icons\\Ability_Hunter_Camouflage"
+            ["Beast Mastery"] = "Interface\\Icons\\ability_hunter_killcommand",
+            ["Marksmanship"] = "Interface\\Icons\\ability_hunter_focusedaim",
+            ["Survival"] = "Interface\\Icons\\ability_hunter_camouflage"
         },
         -- Mage
         ["MAGE"] = {
-            ["Arcane"] = "Interface\\Icons\\Spell_Holy_MagicalSentry",
-            ["Fire"] = "Interface\\Icons\\Spell_Fire_FlameBolt",
-            ["Frost"] = "Interface\\Icons\\Spell_Frost_FrostBolt02"
+            ["Arcane"] = "Interface\\Icons\\spell_holy_magicalsentry",
+            ["Fire"] = "Interface\\Icons\\spell_fire_flamebolt",
+            ["Frost"] = "Interface\\Icons\\spell_frost_frostbolt02"
         },
         -- Monk
         ["MONK"] = {
-            ["Brewmaster"] = "Interface\\Icons\\Spell_Monk_BrewmasterSpec",
-            ["Mistweaver"] = "Interface\\Icons\\Spell_Monk_MistweaverSpec",
-            ["Windwalker"] = "Interface\\Icons\\Spell_Monk_WindwalkerSpec"
+            ["Brewmaster"] = "Interface\\Icons\\spell_monk_brewmaster_spec",
+            ["Mistweaver"] = "Interface\\Icons\\spell_monk_mistweaver_spec",
+            ["Windwalker"] = "Interface\\Icons\\spell_monk_windwalker_spec"
         },
         -- Paladin
         ["PALADIN"] = {
-            ["Holy"] = "Interface\\Icons\\Spell_Holy_HolyBolt",
-            ["Protection"] = "Interface\\Icons\\Ability_Paladin_ShieldofVengeance",
-            ["Retribution"] = "Interface\\Icons\\Spell_Holy_AuraOfLight"
+            ["Holy"] = "Interface\\Icons\\spell_holy_holybolt",
+            ["Protection"] = "Interface\\Icons\\ability_paladin_shieldofvengeance",
+            ["Retribution"] = "Interface\\Icons\\spell_holy_auraoflight"
         },
         -- Priest
         ["PRIEST"] = {
-            ["Discipline"] = "Interface\\Icons\\Spell_Holy_PowerWordShield",
-            ["Holy"] = "Interface\\Icons\\Spell_Holy_GuardianSpirit",
-            ["Shadow"] = "Interface\\Icons\\Spell_Shadow_ShadowWordPain"
+            ["Discipline"] = "Interface\\Icons\\spell_holy_powerwordshield",
+            ["Holy"] = "Interface\\Icons\\spell_holy_guardianspirit",
+            ["Shadow"] = "Interface\\Icons\\spell_shadow_shadowwordpain"
         },
         -- Rogue
         ["ROGUE"] = {
-            ["Assassination"] = "Interface\\Icons\\Ability_Rogue_Eviscerate",
-            ["Outlaw"] = "Interface\\Icons\\INV_Sword_30",
-            ["Subtlety"] = "Interface\\Icons\\Ability_Stealth"
+            ["Assassination"] = "Interface\\Icons\\ability_rogue_eviscerate",
+            ["Outlaw"] = "Interface\\Icons\\inv_sword_30",
+            ["Subtlety"] = "Interface\\Icons\\ability_stealth"
         },
         -- Shaman
         ["SHAMAN"] = {
-            ["Elemental"] = "Interface\\Icons\\Spell_Nature_Lightning",
-            ["Enhancement"] = "Interface\\Icons\\Spell_Shaman_ImprovedStormstrike",
-            ["Restoration"] = "Interface\\Icons\\Spell_Nature_MagicImmunity"
+            ["Elemental"] = "Interface\\Icons\\spell_nature_lightning",
+            ["Enhancement"] = "Interface\\Icons\\spell_shaman_improvedstormstrike",
+            ["Restoration"] = "Interface\\Icons\\spell_nature_magicimmunity"
         },
         -- Warlock
         ["WARLOCK"] = {
-            ["Affliction"] = "Interface\\Icons\\Spell_Shadow_DeathCoil",
-            ["Demonology"] = "Interface\\Icons\\Spell_Shadow_Metamorphosis",
-            ["Destruction"] = "Interface\\Icons\\Spell_Shadow_RainOfFire"
+            ["Affliction"] = "Interface\\Icons\\spell_shadow_deathcoil",
+            ["Demonology"] = "Interface\\Icons\\spell_shadow_metamorphosis",
+            ["Destruction"] = "Interface\\Icons\\spell_shadow_rainoffire"
         },
         -- Warrior
         ["WARRIOR"] = {
-            ["Arms"] = "Interface\\Icons\\Ability_Warrior_SavageBlow",
-            ["Fury"] = "Interface\\Icons\\Ability_Warrior_InnerRage",
-            ["Protection"] = "Interface\\Icons\\Ability_Warrior_DefensiveStance"
+            ["Arms"] = "Interface\\Icons\\ability_warrior_savageblow",
+            ["Fury"] = "Interface\\Icons\\ability_warrior_innerrage",
+            ["Protection"] = "Interface\\Icons\\ability_warrior_defensivestance"
         }
     }
     
-    local classUpper = class:upper()
+    local classUpper = class:upper():gsub(" ", "") -- Remove spaces for lookup (e.g., "Demon Hunter" -> "DEMONHUNTER")
+    
     if specIcons[classUpper] and specIcons[classUpper][spec] then
         return specIcons[classUpper][spec]
+    end
+    
+    if specIcons[classUpper] then
+        local availableSpecs = {}
+        for specName, _ in pairs(specIcons[classUpper]) do
+            table.insert(availableSpecs, specName)
+        end
     end
     
     return "Interface\\Icons\\INV_Misc_QuestionMark"
@@ -153,46 +161,103 @@ local function ParsePlayerData(text)
     
     for _, line in ipairs(lines) do
         if line and trim(line) ~= "" then
-            -- Use a more flexible approach: split by multiple whitespace characters
-            -- This handles tabs, multiple spaces, or mixed whitespace
-            local cleanLine = line:gsub("%s+", " ") -- Replace multiple whitespace with single space
-            local words = {strsplit(" ", cleanLine)}
+            -- Split by tabs first, then fall back to multiple spaces
+            local parts = {strsplit("\t", line)}
             
-            if #words >= 4 then
-                local rank = trim(words[1])
-                local rating = trim(words[2])
-                local name = trim(words[3])
-                local realm = trim(words[4])
+            -- If we didn't get enough parts from tab split, try space split
+            if #parts < 8 then
+                -- Use a more flexible approach: split by multiple whitespace characters
+                local cleanLine = line:gsub("%s+", " ") -- Replace multiple whitespace with single space
+                parts = {strsplit(" ", cleanLine)}
+            end
+            
+            if #parts >= 8 then
+                local rank = trim(parts[1])
+                local rating = trim(parts[2])
+                local name = trim(parts[3])
+                local realm = trim(parts[4])
+                local faction = trim(parts[5])
+                local raceGender = trim(parts[6])  -- "Night Elf Female" 
+                local class = trim(parts[7])
+                local spec = trim(parts[8])
                 
-                -- Initialize additional data variables
-                local faction, race, gender, class, spec, winrate = nil, nil, nil, nil, nil, nil
-                local wordIndex = 5
-                
-                -- Handle realm names with spaces dynamically
-                if #words >= 5 then
-                    local nextWord = trim(words[5])
-                    -- If the next word is not a faction name, it's probably part of the realm
-                    if nextWord:lower() ~= "alliance" and nextWord:lower() ~= "horde" then
-                        realm = realm .. " " .. nextWord
-                        wordIndex = 6
+                -- Extract race and gender from combined field
+                local race, gender = nil, nil
+                if raceGender then
+                    local raceGenderParts = {strsplit(" ", raceGender)}
+                    if #raceGenderParts >= 2 then
+                        gender = raceGenderParts[#raceGenderParts] -- Last word is gender
+                        table.remove(raceGenderParts) -- Remove gender from array
+                        race = table.concat(raceGenderParts, " ") -- Rest is race
+                    else
+                        -- If only one word, treat as race
+                        race = raceGender
                     end
                 end
                 
-                -- Extract additional information if available
-                if #words >= wordIndex then
-                    faction = words[wordIndex] -- Alliance/Horde
-                    if #words >= wordIndex + 1 then race = words[wordIndex + 1] end
-                    if #words >= wordIndex + 2 then gender = words[wordIndex + 2] end
-                    if #words >= wordIndex + 3 then class = words[wordIndex + 3] end
-                    if #words >= wordIndex + 4 then spec = words[wordIndex + 4] end
+                -- For tab-separated data, class and spec should always be in positions 7 and 8
+                -- If we got here via space splitting (fallback), we need to be more careful
+                if line:find("\t") then
+                    -- This was tab-separated, so our parsing should be correct
+                    class = trim(parts[7])
+                    spec = trim(parts[8])
+                else
+                    -- This was space-separated (fallback), need to find class/spec more carefully
+                    -- Look for known class names in the parts array
+                    -- Order matters: put multi-word classes first to avoid partial matches
+                    local knownClasses = {"Death Knight", "Demon Hunter", "Druid", "Evoker", "Hunter", "Mage", "Monk", "Paladin", "Priest", "Rogue", "Shaman", "Warlock", "Warrior"}
+                    local foundClassIndex = nil
                     
-                    -- Look for winrate percentage at the end
-                    for i = #words, 1, -1 do
-                        if words[i] and words[i]:match("%.%d+%%") then
-                            winrate = words[i]
-                            break
+                    -- Try to find multi-word classes first (Death Knight, Demon Hunter)
+                    for i = 6, #parts - 1 do
+                        if parts[i] and parts[i+1] then
+                            local twoWordClass = parts[i] .. " " .. parts[i+1]
+                            for _, knownClass in ipairs(knownClasses) do
+                                if twoWordClass:lower() == knownClass:lower() then
+                                    foundClassIndex = i
+                                    class = twoWordClass
+                                    -- Spec should be the field after the two-word class
+                                    if parts[i+2] then
+                                        spec = parts[i+2]
+                                    end
+                                    break
+                                end
+                            end
+                            if foundClassIndex then break end
                         end
                     end
+                    
+                    -- If no multi-word class found, look for single-word classes
+                    if not foundClassIndex then
+                        for i = 6, #parts do
+                            for _, knownClass in ipairs(knownClasses) do
+                                if parts[i] and parts[i]:lower() == knownClass:lower() then
+                                    foundClassIndex = i
+                                    class = parts[i]
+                                    -- Spec should be the next field after class
+                                    if parts[foundClassIndex + 1] then
+                                        spec = parts[foundClassIndex + 1]
+                                    end
+                                    break
+                                end
+                            end
+                            if foundClassIndex then break end
+                        end
+                    end
+                end
+                
+                -- Look for winrate percentage - it's usually the last field with %
+                local winrate = nil
+                for i = #parts, 1, -1 do
+                    if parts[i] and parts[i]:match("%.%d+%%") then
+                        winrate = parts[i]
+                        break
+                    end
+                end
+                
+                -- Handle special spec names that don't match our icon mapping
+                if spec == "Beast" then
+                    spec = "Beast Mastery"
                 end
                 
                 -- Validate that rank and rating are numbers (basic validation)
@@ -214,13 +279,7 @@ local function ParsePlayerData(text)
                         spec = spec,
                         winrate = winrate
                     }
-                    
-                    print("Added: " .. playerString .. " (Rating: " .. rating .. ", Spec: " .. (spec or "Unknown") .. ", Winrate: " .. (winrate or "Unknown") .. ")")
-                else
-                    print("Skipped line - invalid data format")
                 end
-            else
-                print("Skipped line - not enough columns")
             end
         end
     end
@@ -414,23 +473,10 @@ local function CreateMainInterface()
     local addPlayersTab = CreateTabButton(mainFrame, "Add Players", 1, function() ShowAddPlayersTab() end)
     local playerListTab = CreateTabButton(mainFrame, "Player List", 2, function() ShowPlayerListTab() end)
     local whisperedTab = CreateTabButton(mainFrame, "Already Whispered", 3, function() ShowWhisperedTab() end)
-    local helpTab = CreateTabButton(mainFrame, "Help", 4, function() ShowHelpTab() end)
+    local settingsTab = CreateTabButton(mainFrame, "Settings", 4, function() ShowSettingsTab() end)
     
-    -- Tips checkbox in top right
-    local tipsCheckbox = CreateFrame("CheckButton", nil, mainFrame, "UICheckButtonTemplate")
-    tipsCheckbox:SetPoint("TOPRIGHT", mainFrame, "TOPRIGHT", -40, -40)
-    tipsCheckbox:SetChecked(WhisperMacrosDB.showTips)
-    tipsCheckbox:SetScript("OnClick", function()
-        WhisperMacrosDB.showTips = tipsCheckbox:GetChecked()
-        -- Refresh current tab to apply/remove tips
-        if currentTab == 1 then
-            ShowAddPlayersTab()
-        end
-    end)
     
-    local tipsLabel = mainFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-    tipsLabel:SetPoint("RIGHT", tipsCheckbox, "LEFT", -5, 0)
-    tipsLabel:SetText("Tips")
+    -- Tips checkbox removed from main frame - moved to Settings tab
     
     -- Content area with modern styling
     mainFrame.content = CreateFrame("Frame", nil, mainFrame)
@@ -468,6 +514,7 @@ local isWhispering = false
 local whisperCount = 0
 local totalWhispers = 0
 local pendingWhispers = {} -- Track whispers waiting for confirmation
+local whisperTimer = nil -- Store the current timer for cancellation
 
 -- Function to handle whisper success/failure
 local function OnWhisperResult(self, event, ...)
@@ -539,7 +586,11 @@ local function SendNextWhisper()
             pendingWhispers[playerName] = true
             
             SendChatMessage(WhisperMacrosDB.whisperMessage, "WHISPER", nil, playerName)
-            print("Sent whisper " .. whisperCount .. "/" .. totalWhispers .. " to " .. playerName .. "")
+            
+            -- Only print if we're still actively whispering (prevents confusing output after stopping)
+            if isWhispering then
+                print("Sent whisper " .. whisperCount .. "/" .. totalWhispers .. " to " .. playerName .. "")
+            end
             
         else
             print("Skipping " .. playerName .. " (already whispered)")
@@ -547,15 +598,21 @@ local function SendNextWhisper()
         
         currentIndex = currentIndex + 1
         
-        -- Continue if there are more whispers
-        if currentIndex <= #WhisperMacrosDB.players then
-            C_Timer.After(1.5, SendNextWhisper) -- 1.5 second delay between whispers
+        -- Continue if there are more whispers and we're still whispering
+        if currentIndex <= #WhisperMacrosDB.players and isWhispering then
+            whisperTimer = C_Timer.After(1.5, SendNextWhisper) -- Store timer handle for cancellation
         else
-            -- Done sending all whispers
+            -- Done sending all whispers or stopped
             isWhispering = false
             currentIndex = 1
             whisperCount = 0
             totalWhispers = 0
+            whisperTimer = nil
+            
+            -- Update LFG button state if it exists
+            if lfgButton and lfgButton.UpdateToggleButtonState then
+                lfgButton.UpdateToggleButtonState()
+            end
             
             -- Clean up any remaining pending whispers after a delay
             C_Timer.After(5, function()
@@ -565,7 +622,14 @@ local function SendNextWhisper()
                 end
             end)
             
-            print("Finished sending whispers!")
+            if currentIndex > #WhisperMacrosDB.players then
+                print("Finished sending whispers!")
+            else
+                -- Only print if we're still in whispering mode (not stopped externally)
+                if isWhispering then
+                    print("Whispering stopped.")
+                end
+            end
         end
     end
 end
@@ -608,7 +672,40 @@ local function StartWhispering()
     currentIndex = 1
     whisperCount = 0
     print("Starting to send whispers... (1.5s delay between each)")
+    
+    -- Update LFG button state if it exists
+    if lfgButton and lfgButton.UpdateToggleButtonState then
+        lfgButton.UpdateToggleButtonState()
+    end
+    
     SendNextWhisper()
+end
+
+-- Function to stop whispering
+local function StopWhispering()
+    if not isWhispering then
+        print("No whispering in progress.")
+        return
+    end
+    
+    -- Cancel any pending timer
+    if whisperTimer then
+        whisperTimer:Cancel()
+        whisperTimer = nil
+    end
+    
+    -- Reset state
+    isWhispering = false
+    currentIndex = 1
+    whisperCount = 0
+    totalWhispers = 0
+    
+    -- Update LFG button state if it exists
+    if lfgButton and lfgButton.UpdateToggleButtonState then
+        lfgButton.UpdateToggleButtonState()
+    end
+    
+    print("Whispering stopped.")
 end
 
 -- Function to clear content area
@@ -1253,7 +1350,7 @@ function ShowAddPlayersTab()
 end
 
 -- Player List Tab
-function ShowPlayerListTab()
+function ShowPlayerListTab(preserveScrollPosition)
     local contentFrame = ShowTabContent(2)
     
     -- Tutorial: Track when Player List tab is visited after whisper message editing
@@ -1322,23 +1419,70 @@ function ShowPlayerListTab()
     scrollFrame:SetPoint("TOPLEFT", header, "BOTTOMLEFT", 0, -45)
     scrollFrame:SetSize(540, 315)
     
-    -- Custom scroll speed handling
-    local function CustomScrollHandler(self, delta)
-        local scrollStep = 15 -- Smaller step = slower scroll (default is usually 20-30)
-        local currentScroll = self:GetVerticalScroll()
-        local maxScroll = self:GetVerticalScrollRange()
-        
-        -- Calculate new scroll position
-        local newScroll = currentScroll - (delta * scrollStep)
-        newScroll = math.max(0, math.min(newScroll, maxScroll))
-        
-        -- Apply smooth scroll
-        self:SetVerticalScroll(newScroll)
+    -- Smooth scroll animation system
+    local smoothScrollAnimation = nil
+    local targetScroll = 0
+    
+    local function CreateSmoothScrollHandler(scrollFrame)
+        return function(self, delta)
+            local scrollStep = 15 -- Scroll step per wheel tick
+            local currentScroll = self:GetVerticalScroll()
+            local maxScroll = self:GetVerticalScrollRange()
+            
+            -- Calculate target scroll position
+            targetScroll = currentScroll - (delta * scrollStep)
+            targetScroll = math.max(0, math.min(targetScroll, maxScroll))
+            
+            -- Stop any existing animation
+            if smoothScrollAnimation then
+                smoothScrollAnimation:Stop()
+            end
+            
+            -- Don't animate if we're already at the target
+            if math.abs(currentScroll - targetScroll) < 1 then
+                return
+            end
+            
+            -- Create smooth scroll animation
+            smoothScrollAnimation = self:CreateAnimationGroup()
+            local scrollAnim = smoothScrollAnimation:CreateAnimation("Animation")
+            scrollAnim:SetDuration(0.15) -- 150ms animation
+            
+            local startScroll = currentScroll
+            local scrollDifference = targetScroll - startScroll
+            
+            scrollAnim:SetScript("OnUpdate", function(anim)
+                local progress = anim:GetProgress()
+                -- Use ease-out cubic for smooth deceleration
+                local easedProgress = 1 - (1 - progress)^3
+                local newScroll = startScroll + (scrollDifference * easedProgress)
+                self:SetVerticalScroll(newScroll)
+            end)
+            
+            scrollAnim:SetScript("OnFinished", function()
+                self:SetVerticalScroll(targetScroll)
+                smoothScrollAnimation = nil
+            end)
+            
+            smoothScrollAnimation:Play()
+        end
     end
     
-    -- Enable mouse wheel scrolling with custom speed
+    -- Enable mouse wheel scrolling with smooth animation
     scrollFrame:EnableMouseWheel(true)
-    scrollFrame:SetScript("OnMouseWheel", CustomScrollHandler)
+    scrollFrame:SetScript("OnMouseWheel", CreateSmoothScrollHandler(scrollFrame))
+    
+    -- Set scroll position immediately if preserving scroll position
+    if preserveScrollPosition and preserveScrollPosition > 0 then
+        -- Delay setting scroll position until after content is created and scroll range is calculated
+        C_Timer.After(0.01, function()
+            if scrollFrame and scrollFrame:IsShown() then
+                local maxScroll = scrollFrame:GetVerticalScrollRange()
+                local adjustedScroll = math.max(0, math.min(preserveScrollPosition, maxScroll))
+                scrollFrame:SetVerticalScroll(adjustedScroll)
+            end
+        end)
+    end
     
     -- Column headers
     local headerFrame = CreateFrame("Frame", nil, contentFrame)
@@ -1457,10 +1601,23 @@ function ShowPlayerListTab()
         local removeButton = CreateModernButton(playerFrame, 60, 18, "Remove")
         removeButton:SetPoint("RIGHT", playerFrame, "RIGHT", -5, 0)
         removeButton:SetScript("OnClick", function()
+            -- Calculate adjusted scroll position for row removal
+            local currentScroll = scrollFrame:GetVerticalScroll()
+            local rowHeight = 30
+            local removedRowPosition = (i - 1) * rowHeight -- Position of removed row
+            local adjustedScroll = currentScroll
+            
+            -- If the removed row was above the current scroll position, adjust upward
+            if removedRowPosition < currentScroll then
+                adjustedScroll = math.max(0, currentScroll - rowHeight)
+            end
+            
             -- Also remove from playerData when removing from list
             WhisperMacrosDB.playerData[player] = nil
             table.remove(WhisperMacrosDB.players, i)
-            ShowPlayerListTab() -- Refresh
+            
+            -- Refresh the tab with the preserved scroll position
+            ShowPlayerListTab(adjustedScroll)
         end)
         
         yOffset = yOffset - 30
@@ -1470,7 +1627,7 @@ function ShowPlayerListTab()
 end
 
 -- Already Whispered Tab
-function ShowWhisperedTab()
+function ShowWhisperedTab(preserveScrollPosition)
     local contentFrame = ShowTabContent(3)
     
     -- Content is always cleared by ShowTabContent, so always recreate
@@ -1497,23 +1654,70 @@ function ShowWhisperedTab()
     scrollFrame:SetPoint("TOPLEFT", header, "BOTTOMLEFT", 0, -50)
     scrollFrame:SetSize(540, 310)
     
-    -- Custom scroll speed handling for whispered tab
-    local function CustomScrollHandler(self, delta)
-        local scrollStep = 15 -- Smaller step = slower scroll
-        local currentScroll = self:GetVerticalScroll()
-        local maxScroll = self:GetVerticalScrollRange()
-        
-        -- Calculate new scroll position
-        local newScroll = currentScroll - (delta * scrollStep)
-        newScroll = math.max(0, math.min(newScroll, maxScroll))
-        
-        -- Apply smooth scroll
-        self:SetVerticalScroll(newScroll)
+    -- Smooth scroll animation system for whispered tab
+    local whisperSmoothScrollAnimation = nil
+    local whisperTargetScroll = 0
+    
+    local function CreateSmoothScrollHandler(scrollFrame)
+        return function(self, delta)
+            local scrollStep = 15 -- Scroll step per wheel tick
+            local currentScroll = self:GetVerticalScroll()
+            local maxScroll = self:GetVerticalScrollRange()
+            
+            -- Calculate target scroll position
+            whisperTargetScroll = currentScroll - (delta * scrollStep)
+            whisperTargetScroll = math.max(0, math.min(whisperTargetScroll, maxScroll))
+            
+            -- Stop any existing animation
+            if whisperSmoothScrollAnimation then
+                whisperSmoothScrollAnimation:Stop()
+            end
+            
+            -- Don't animate if we're already at the target
+            if math.abs(currentScroll - whisperTargetScroll) < 1 then
+                return
+            end
+            
+            -- Create smooth scroll animation
+            whisperSmoothScrollAnimation = self:CreateAnimationGroup()
+            local scrollAnim = whisperSmoothScrollAnimation:CreateAnimation("Animation")
+            scrollAnim:SetDuration(0.15) -- 150ms animation
+            
+            local startScroll = currentScroll
+            local scrollDifference = whisperTargetScroll - startScroll
+            
+            scrollAnim:SetScript("OnUpdate", function(anim)
+                local progress = anim:GetProgress()
+                -- Use ease-out cubic for smooth deceleration
+                local easedProgress = 1 - (1 - progress)^3
+                local newScroll = startScroll + (scrollDifference * easedProgress)
+                self:SetVerticalScroll(newScroll)
+            end)
+            
+            scrollAnim:SetScript("OnFinished", function()
+                self:SetVerticalScroll(whisperTargetScroll)
+                whisperSmoothScrollAnimation = nil
+            end)
+            
+            whisperSmoothScrollAnimation:Play()
+        end
     end
     
-    -- Enable mouse wheel scrolling with custom speed
+    -- Enable mouse wheel scrolling with smooth animation
     scrollFrame:EnableMouseWheel(true)
-    scrollFrame:SetScript("OnMouseWheel", CustomScrollHandler)
+    scrollFrame:SetScript("OnMouseWheel", CreateSmoothScrollHandler(scrollFrame))
+    
+    -- Set scroll position immediately if preserving scroll position
+    if preserveScrollPosition and preserveScrollPosition > 0 then
+        -- Delay setting scroll position until after content is created and scroll range is calculated
+        C_Timer.After(0.01, function()
+            if scrollFrame and scrollFrame:IsShown() then
+                local maxScroll = scrollFrame:GetVerticalScrollRange()
+                local adjustedScroll = math.max(0, math.min(preserveScrollPosition, maxScroll))
+                scrollFrame:SetVerticalScroll(adjustedScroll)
+            end
+        end)
+    end
     
     -- Column headers for whispered tab
     local headerFrame = CreateFrame("Frame", nil, contentFrame)
@@ -1593,8 +1797,21 @@ function ShowWhisperedTab()
         local removeButton = CreateModernButton(playerFrame, 60, 18, "Remove")
         removeButton:SetPoint("RIGHT", playerFrame, "RIGHT", -5, 0)
         removeButton:SetScript("OnClick", function()
+            -- Calculate adjusted scroll position for row removal
+            local currentScroll = scrollFrame:GetVerticalScroll()
+            local rowHeight = 30
+            local removedRowPosition = (i - 1) * rowHeight -- Position of removed row
+            local adjustedScroll = currentScroll
+            
+            -- If the removed row was above the current scroll position, adjust upward
+            if removedRowPosition < currentScroll then
+                adjustedScroll = math.max(0, currentScroll - rowHeight)
+            end
+            
             table.remove(WhisperMacrosDB.whisperedPlayers, i)
-            ShowWhisperedTab() -- Refresh
+            
+            -- Refresh the tab with the preserved scroll position
+            ShowWhisperedTab(adjustedScroll)
         end)
         
         yOffset = yOffset - 30
@@ -1605,57 +1822,587 @@ end
 
 
 
+
 -- Help Tab
-function ShowHelpTab()
+function ShowSettingsTab()
     local contentFrame = ShowTabContent(4)
-    
-    -- Tutorial: Stop Help tab button glow when visited
-    if WhisperMacrosDB.showTips and tutorialPlayerListTabVisited and helpTabBorderFrame then
-        for _, animGroup in ipairs(helpTabAnimGroups) do
-            animGroup:Stop()
-        end
-        helpTabBorderFrame:Hide()
-    end
     
     -- Content is always cleared by ShowTabContent, so always recreate
     
-    local helpText = contentFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    helpText:SetPoint("TOPLEFT", contentFrame, "TOPLEFT", 10, -10)
-    helpText:SetWidth(520)
-    helpText:SetJustifyH("LEFT")
-    helpText:SetText("How to use this addon:\n\n" ..
-        "1. Go to https://www.pvpleaderboard.com/leaderboards/filter?leaderboard=3v3&region=US\n\n" ..
-        "2. Copy player data from the leaderboard (the entire line for each player)\n\n" ..
-        "3. Paste it in the 'Add Players' tab and click 'Parse Players'\n\n" ..
-        "4. Go to 'Player List' tab to see your players\n\n" ..
-        "5. Use '/lfg w' to start whispering players\n\n" ..
-        "Commands:\n" ..
-        "/lfg - Opens this interface\n" ..
-        "/lfg w - Start whispering players")
+    -- Settings title
+    local settingsTitle = contentFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlightLarge")
+    settingsTitle:SetPoint("TOPLEFT", contentFrame, "TOPLEFT", 10, -10)
+    settingsTitle:SetText("|cff4da6ffSettings|r")
     
-    -- Tutorial: Create glow around the "/lfg w" command text (always check/recreate if needed)
-    if WhisperMacrosDB.showTips and tutorialPlayerListTabVisited and not helpTabTutorialFrame then
-        -- Create a frame container for the command text
-        helpTabTutorialFrame = CreateFrame("Frame", nil, contentFrame)
-        helpTabTutorialFrame:SetPoint("BOTTOM", contentFrame, "BOTTOM", 0, 20) -- Position at bottom center
-        helpTabTutorialFrame:SetSize(300, 20) -- Set appropriate size for the text
-        
-        -- Create the text element inside the frame
-        local commandText = helpTabTutorialFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-        commandText:SetPoint("CENTER", helpTabTutorialFrame, "CENTER", 0, 0) -- Center the text in the frame
-        commandText:SetJustifyH("CENTER") -- Center justify the text
-        commandText:SetText("/lfg w - Start whispering players")
-        
-        -- Create glow border around the command frame (not the text directly)
-        local commandBorderFrame, commandBorders = CreateGlowBorder(helpTabTutorialFrame, 2)
-        local commandAnimGroups = CreatePulseAnimation(commandBorders, true)
-        
-        -- Start the glow animation
-        commandBorderFrame:Show()
-        for _, animGroup in ipairs(commandAnimGroups) do
-            animGroup:Play()
+    -- Tips setting
+    local tipsCheckbox = CreateFrame("CheckButton", nil, contentFrame, "UICheckButtonTemplate")
+    tipsCheckbox:SetPoint("TOPLEFT", settingsTitle, "BOTTOMLEFT", 0, -20)
+    tipsCheckbox:SetChecked(WhisperMacrosDB.showTips)
+    tipsCheckbox:SetScript("OnClick", function()
+        WhisperMacrosDB.showTips = tipsCheckbox:GetChecked()
+        -- Refresh current tab to apply/remove tips
+        if currentTab == 1 then
+            ShowAddPlayersTab()
+        end
+    end)
+    
+    local tipsLabel = contentFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    tipsLabel:SetPoint("LEFT", tipsCheckbox, "RIGHT", 5, 0)
+    tipsLabel:SetText("Show tutorial tips and highlighting")
+    
+    local tipsDescription = contentFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+    tipsDescription:SetPoint("TOPLEFT", tipsLabel, "BOTTOMLEFT", -25, -5)
+    tipsDescription:SetWidth(500)
+    tipsDescription:SetJustifyH("LEFT")
+    tipsDescription:SetTextColor(0.7, 0.7, 0.7, 1)
+    tipsDescription:SetText("When enabled, shows glowing borders and tips to guide you through using the addon")
+    
+    -- Remove after whisper setting
+    local removeCheckbox = CreateFrame("CheckButton", nil, contentFrame, "UICheckButtonTemplate")
+    removeCheckbox:SetPoint("TOPLEFT", tipsDescription, "BOTTOMLEFT", -11, -20)
+    removeCheckbox:SetChecked(WhisperMacrosDB.removeAfterWhisper)
+    removeCheckbox:SetScript("OnClick", function()
+        WhisperMacrosDB.removeAfterWhisper = removeCheckbox:GetChecked()
+    end)
+    
+    local removeLabel = contentFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    removeLabel:SetPoint("LEFT", removeCheckbox, "RIGHT", 5, 0)
+    removeLabel:SetText("Remove players after whispering")
+    
+    local removeDescription = contentFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+    removeDescription:SetPoint("TOPLEFT", removeLabel, "BOTTOMLEFT", -25, -5)
+    removeDescription:SetWidth(500)
+    removeDescription:SetJustifyH("LEFT")
+    removeDescription:SetTextColor(0.7, 0.7, 0.7, 1)
+    removeDescription:SetText("When enabled, players are automatically moved to 'Already Whispered' list after sending whispers")
+    
+    -- Commands section
+    local commandsLabel = contentFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    commandsLabel:SetPoint("TOPLEFT", removeDescription, "BOTTOMLEFT", 0, -30)
+    commandsLabel:SetText("Commands:")
+    
+    local commandsText = contentFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+    commandsText:SetPoint("TOPLEFT", commandsLabel, "BOTTOMLEFT", 0, -10)
+    commandsText:SetWidth(520)
+    commandsText:SetJustifyH("LEFT")
+    commandsText:SetText("/lfg - Opens this interface\n/lfg w - Start whispering players")
+    
+    -- Clear data section
+    local clearLabel = contentFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    clearLabel:SetPoint("TOPLEFT", commandsText, "BOTTOMLEFT", 0, -15)
+    clearLabel:SetText("Data Management:")
+    
+    local clearAllButton = CreateModernButton(contentFrame, 150, 25, "Clear All Data")
+    clearAllButton:SetPoint("TOPLEFT", clearLabel, "BOTTOMLEFT", 0, -10)
+    clearAllButton:SetScript("OnClick", function()
+        WhisperMacrosDB.players = {}
+        WhisperMacrosDB.whisperedPlayers = {}
+        WhisperMacrosDB.playerData = {}
+        print("All player data cleared!")
+        -- Refresh Player List tab if it's currently shown
+        if currentTab == 2 then
+            ShowPlayerListTab()
+        end
+    end)
+    
+    local clearDescription = contentFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+    clearDescription:SetPoint("TOPLEFT", clearAllButton, "BOTTOMLEFT", 0, -5)
+    clearDescription:SetWidth(500)
+    clearDescription:SetJustifyH("LEFT")
+    clearDescription:SetTextColor(0.7, 0.7, 0.7, 1)
+    clearDescription:SetText("Removes all players from both the main list and already whispered list")
+end
+
+-- LFG Frame Integration
+local lfgButton = nil
+local lfgButtonCreated = false
+local entriesRepositioned = false
+local originalEntryPositions = {} -- Store original positions for restoration
+
+-- Function to create a fake LFG entry button
+local function CreateLFGButton()
+    if lfgButtonCreated then
+        return
+    end
+    
+    if not LFGListFrame or not LFGListFrame.SearchPanel then
+        print("WhisperMacros: LFGListFrame or SearchPanel not available yet")
+        return
+    end
+    
+    -- Wait for the scroll frame to be available
+    if not LFGListFrame.SearchPanel.ScrollBox or not LFGListFrame.SearchPanel.ScrollBox.ScrollTarget then
+        print("WhisperMacros: ScrollBox/ScrollTarget not available, retrying...")
+        C_Timer.After(0.1, CreateLFGButton)
+        return
+    end
+    
+    local scrollTarget = LFGListFrame.SearchPanel.ScrollBox.ScrollTarget
+    
+    -- Create our custom button that looks like an LFG entry
+    lfgButton = CreateFrame("Button", "WhisperMacrosLFGButton", scrollTarget)
+    lfgButton:SetHeight(36) -- Slightly smaller height
+    lfgButton:SetPoint("TOPLEFT", scrollTarget, "TOPLEFT", 0, 0)
+    lfgButton:SetPoint("TOPRIGHT", scrollTarget, "TOPRIGHT", 0, 0) -- Stretch full width
+    
+    -- Background styling matching LFG entries (darker, more muted)
+    local bg = lfgButton:CreateTexture(nil, "BACKGROUND")
+    bg:SetAllPoints(lfgButton)
+    bg:SetColorTexture(0.1, 0.1, 0.12, 0.85) -- Darker background like other LFG entries
+    lfgButton.bg = bg
+    
+    local border = lfgButton:CreateTexture(nil, "BORDER")
+    border:SetAllPoints(lfgButton)
+    border:SetColorTexture(0.2, 0.2, 0.25, 0.6) -- Subtle border
+    lfgButton.border = border
+    
+    local innerBg = lfgButton:CreateTexture(nil, "ARTWORK")
+    innerBg:SetPoint("TOPLEFT", lfgButton, "TOPLEFT", 1, -1)
+    innerBg:SetPoint("BOTTOMRIGHT", lfgButton, "BOTTOMRIGHT", -1, 1)
+    innerBg:SetColorTexture(0.12, 0.12, 0.15, 0.9) -- Similar to LFG entry background
+    lfgButton.innerBg = innerBg
+    
+    -- Subtle gradient effect
+    local gradient = lfgButton:CreateTexture(nil, "OVERLAY")
+    gradient:SetPoint("TOPLEFT", innerBg, "TOPLEFT", 0, 0)
+    gradient:SetPoint("BOTTOMRIGHT", innerBg, "BOTTOMRIGHT", 0, 0)
+    gradient:SetColorTexture(0.15, 0.15, 0.18, 0.2) -- Very subtle gradient
+    lfgButton.gradient = gradient
+    
+    -- Title text with golden color (no icon needed)
+    local title = lfgButton:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    title:SetPoint("LEFT", lfgButton, "LEFT", 6, 8) -- Moved from 12 to 6 to align with other entries
+    title:SetWidth(300)
+    title:SetJustifyH("LEFT")
+    title:SetText("|cffffd700Whisper Macros|r")
+    title:SetTextColor(1, 0.84, 0, 1) -- Golden color (255, 215, 0)
+    lfgButton.title = title
+    
+    -- Description text
+    local description = lfgButton:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+    description:SetPoint("LEFT", lfgButton, "LEFT", 10, -8) -- Shifted right from 6 to 12 for description only
+    description:SetWidth(300) -- Increased width since we removed the stop button
+    description:SetJustifyH("LEFT")
+    description:SetTextColor(0.8, 0.8, 0.8, 1)
+    description:SetText("Find Arena Partners")
+    lfgButton.description = description
+    
+    -- Toggle Play/Pause button on the right side
+    local toggleButton = CreateFrame("Button", nil, lfgButton)
+    toggleButton:SetSize(28, 28)
+    toggleButton:SetPoint("RIGHT", lfgButton, "RIGHT", -8, 0)
+    
+    -- Minimal button styling (very subtle background)
+    local buttonBg = toggleButton:CreateTexture(nil, "BACKGROUND")
+    buttonBg:SetPoint("CENTER", toggleButton, "CENTER", 0, 0)
+    buttonBg:SetSize(20, 20)
+    buttonBg:SetColorTexture(0.1, 0.1, 0.15, 0.3)
+    
+    local buttonInnerBg = toggleButton:CreateTexture(nil, "ARTWORK")
+    buttonInnerBg:SetPoint("CENTER", toggleButton, "CENTER", 0, 0)
+    buttonInnerBg:SetSize(18, 18)
+    buttonInnerBg:SetColorTexture(0.15, 0.15, 0.2, 0.4)
+    
+    -- Store button styling references (minimal background)
+    toggleButton.bg = buttonBg
+    toggleButton.innerBg = buttonInnerBg
+    
+    -- Play icon - custom triangle using textures (more bars for smoother triangle)
+    local playIcon = CreateFrame("Frame", nil, toggleButton)
+    playIcon:SetSize(16, 16)
+    playIcon:SetPoint("CENTER", toggleButton, "CENTER", 1, 0)
+    
+    -- Create triangle using seven thin bars for a smooth triangular shape
+    local triangle1 = playIcon:CreateTexture(nil, "OVERLAY")
+    triangle1:SetSize(1, 12)
+    triangle1:SetPoint("LEFT", playIcon, "LEFT", 3, 0)
+    triangle1:SetColorTexture(0.4, 0.8, 0.4, 1) -- Green color
+    
+    local triangle2 = playIcon:CreateTexture(nil, "OVERLAY")
+    triangle2:SetSize(1, 10)
+    triangle2:SetPoint("LEFT", triangle1, "RIGHT", 0, 0)
+    triangle2:SetColorTexture(0.4, 0.8, 0.4, 1) -- Green color
+    
+    local triangle3 = playIcon:CreateTexture(nil, "OVERLAY")
+    triangle3:SetSize(1, 8)
+    triangle3:SetPoint("LEFT", triangle2, "RIGHT", 0, 0)
+    triangle3:SetColorTexture(0.4, 0.8, 0.4, 1) -- Green color
+    
+    local triangle4 = playIcon:CreateTexture(nil, "OVERLAY")
+    triangle4:SetSize(1, 6)
+    triangle4:SetPoint("LEFT", triangle3, "RIGHT", 0, 0)
+    triangle4:SetColorTexture(0.4, 0.8, 0.4, 1) -- Green color
+    
+    local triangle5 = playIcon:CreateTexture(nil, "OVERLAY")
+    triangle5:SetSize(1, 4)
+    triangle5:SetPoint("LEFT", triangle4, "RIGHT", 0, 0)
+    triangle5:SetColorTexture(0.4, 0.8, 0.4, 1) -- Green color
+    
+    local triangle6 = playIcon:CreateTexture(nil, "OVERLAY")
+    triangle6:SetSize(1, 2)
+    triangle6:SetPoint("LEFT", triangle5, "RIGHT", 0, 0)
+    triangle6:SetColorTexture(0.4, 0.8, 0.4, 1) -- Green color
+    
+    -- Store triangle parts for color changes
+    playIcon.parts = {triangle1, triangle2, triangle3, triangle4, triangle5, triangle6}
+    
+    -- Pause icon - two vertical bars (smaller and green)
+    local pauseIcon = CreateFrame("Frame", nil, toggleButton)
+    pauseIcon:SetSize(16, 16)
+    pauseIcon:SetPoint("CENTER", toggleButton, "CENTER", 0, 0)
+    
+    local bar1 = pauseIcon:CreateTexture(nil, "OVERLAY")
+    bar1:SetSize(2, 10)
+    bar1:SetPoint("CENTER", pauseIcon, "CENTER", -2.5, 0)
+    bar1:SetColorTexture(0.4, 0.8, 0.4, 1) -- Green color (same as play)
+    
+    local bar2 = pauseIcon:CreateTexture(nil, "OVERLAY")
+    bar2:SetSize(2, 10)
+    bar2:SetPoint("CENTER", pauseIcon, "CENTER", 2.5, 0)
+    bar2:SetColorTexture(0.4, 0.8, 0.4, 1) -- Green color (same as play)
+    
+    -- Store bar parts for color changes
+    pauseIcon.parts = {bar1, bar2}
+    pauseIcon:Hide() -- Start hidden
+    
+    -- Store references
+    lfgButton.toggleButton = toggleButton
+    lfgButton.playIcon = playIcon
+    lfgButton.pauseIcon = pauseIcon
+    
+    -- Function to update toggle button state
+    local function UpdateToggleButtonState()
+        if isWhispering then
+            -- Show pause icon, hide play icon
+            playIcon:Hide()
+            pauseIcon:Show()
+        else
+            -- Show play icon, hide pause icon
+            pauseIcon:Hide()
+            playIcon:Show()
         end
     end
+    
+    -- Store the update function reference
+    lfgButton.UpdateToggleButtonState = UpdateToggleButtonState
+    
+    -- Toggle button hover effects
+    toggleButton:SetScript("OnEnter", function()
+        -- Button hover effect (subtle)
+        toggleButton.innerBg:SetColorTexture(0.2, 0.2, 0.25, 0.6)
+        
+        if isWhispering then
+            -- Brighter green on hover for pause bars
+            for _, part in ipairs(pauseIcon.parts) do
+                part:SetColorTexture(0.6, 1, 0.6, 1)
+            end
+            
+            -- Show tooltip for pause button
+            GameTooltip:SetOwner(toggleButton, "ANCHOR_RIGHT")
+            GameTooltip:SetText("Pause Whispering", 0.3, 0.8, 0.3, true)
+            GameTooltip:AddLine(" ")
+            GameTooltip:AddLine("Click to pause sending whispers", 1, 1, 1, true)
+            GameTooltip:Show()
+        else
+            -- Brighter green on hover for play triangle
+            for _, part in ipairs(playIcon.parts) do
+                part:SetColorTexture(0.6, 1, 0.6, 1)
+            end
+            
+            -- Show tooltip for play button
+            GameTooltip:SetOwner(toggleButton, "ANCHOR_RIGHT")
+            GameTooltip:SetText("Start Whispering", 0.3, 0.8, 0.3, true)
+            GameTooltip:AddLine(" ")
+            GameTooltip:AddLine("Click to start sending whispers to players", 1, 1, 1, true)
+            GameTooltip:AddLine("in your Player List", 1, 1, 1, true)
+            GameTooltip:Show()
+        end
+    end)
+    
+    toggleButton:SetScript("OnLeave", function()
+        -- Button normal state
+        toggleButton.innerBg:SetColorTexture(0.15, 0.15, 0.2, 0.4)
+        
+        if isWhispering then
+            -- Return to normal green for pause bars
+            for _, part in ipairs(pauseIcon.parts) do
+                part:SetColorTexture(0.4, 0.8, 0.4, 1)
+            end
+        else
+            -- Return to normal green for play triangle
+            for _, part in ipairs(playIcon.parts) do
+                part:SetColorTexture(0.4, 0.8, 0.4, 1)
+            end
+        end
+        GameTooltip:Hide()
+    end)
+    
+    toggleButton:SetScript("OnMouseDown", function()
+        -- Button pressed effect
+        toggleButton.innerBg:SetColorTexture(0.1, 0.1, 0.15, 0.7)
+        
+        if isWhispering then
+            -- Darker green on click for pause bars
+            for _, part in ipairs(pauseIcon.parts) do
+                part:SetColorTexture(0.3, 0.6, 0.3, 1)
+            end
+        else
+            -- Darker green on click for play triangle
+            for _, part in ipairs(playIcon.parts) do
+                part:SetColorTexture(0.3, 0.6, 0.3, 1)
+            end
+        end
+    end)
+    
+    toggleButton:SetScript("OnMouseUp", function()
+        -- Return to hover state
+        toggleButton.innerBg:SetColorTexture(0.2, 0.2, 0.25, 0.6)
+        
+        if isWhispering then
+            -- Return to hover state for pause bars
+            for _, part in ipairs(pauseIcon.parts) do
+                part:SetColorTexture(0.6, 1, 0.6, 1)
+            end
+        else
+            -- Return to hover state for play triangle
+            for _, part in ipairs(playIcon.parts) do
+                part:SetColorTexture(0.6, 1, 0.6, 1)
+            end
+        end
+    end)
+    
+    -- Toggle button click handler
+    toggleButton:SetScript("OnClick", function()
+        if isWhispering then
+            StopWhispering()
+        else
+            StartWhispering()
+        end
+        UpdateToggleButtonState()
+        PlaySound(isWhispering and SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON or SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_OFF)
+    end)
+    
+    toggleButton:RegisterForClicks("LeftButtonUp")
+    
+    -- Initialize button state
+    UpdateToggleButtonState()
+    
+    -- Hover and click effects matching LFG entries
+    lfgButton:SetScript("OnEnter", function()
+        lfgButton.innerBg:SetColorTexture(0.18, 0.18, 0.22, 0.95) -- Subtle hover highlight
+        lfgButton.gradient:SetColorTexture(0.2, 0.2, 0.25, 0.3)
+        lfgButton.title:SetTextColor(1, 1, 1, 1) -- Bright white on hover
+        lfgButton.description:SetTextColor(1, 1, 1, 1)
+        -- Keep background consistent
+        lfgButton.bg:SetColorTexture(0.1, 0.1, 0.12, 0.85)
+        lfgButton.border:SetColorTexture(0.25, 0.25, 0.3, 0.8)
+        
+        -- Show tooltip
+        GameTooltip:SetOwner(lfgButton, "ANCHOR_RIGHT")
+        GameTooltip:SetText("WhisperMacros", 1, 0.84, 0, true)
+        GameTooltip:AddLine(" ")
+        GameTooltip:AddLine("Left Click: Open WhisperMacros interface", 1, 1, 1, true)
+        GameTooltip:AddLine("Toggle Button: Start/Pause whispering players", 0.3, 0.8, 0.3, true)
+        GameTooltip:AddLine(" ")
+        GameTooltip:AddLine("Find Arena Partners and send whispers", 0.6, 0.6, 0.6, true)
+        GameTooltip:Show()
+    end)
+    
+    lfgButton:SetScript("OnLeave", function()
+        lfgButton.innerBg:SetColorTexture(0.12, 0.12, 0.15, 0.9) -- Return to normal
+        lfgButton.gradient:SetColorTexture(0.15, 0.15, 0.18, 0.2)
+        lfgButton.title:SetTextColor(1, 0.84, 0, 1) -- Return to golden color
+        lfgButton.description:SetTextColor(0.8, 0.8, 0.8, 1)
+        -- Keep background consistent
+        lfgButton.bg:SetColorTexture(0.1, 0.1, 0.12, 0.85)  
+        lfgButton.border:SetColorTexture(0.2, 0.2, 0.25, 0.6)
+        
+        -- Hide tooltip
+        GameTooltip:Hide()
+    end)
+    
+    lfgButton:SetScript("OnMouseDown", function()
+        lfgButton.innerBg:SetColorTexture(0.08, 0.08, 0.1, 0.95) -- Darker on click
+        lfgButton.gradient:SetColorTexture(0.1, 0.1, 0.12, 0.4)
+    end)
+    
+    lfgButton:SetScript("OnMouseUp", function()
+        lfgButton.innerBg:SetColorTexture(0.18, 0.18, 0.22, 0.95) -- Return to hover state
+        lfgButton.gradient:SetColorTexture(0.2, 0.2, 0.25, 0.3)
+    end)
+    
+    -- Click handler
+    lfgButton:SetScript("OnClick", function(self, button)
+        if button == "LeftButton" then
+            CreateMainInterface()
+            -- Add a subtle sound effect
+            PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
+        end
+    end)
+    
+    -- Register for clicks
+    lfgButton:RegisterForClicks("LeftButtonUp")
+    
+    lfgButtonCreated = true
+    -- Hide the button initially - it will be shown when LFG is open and on arena category
+    lfgButton:Hide()
+end
+
+-- Function to update LFG button visibility and position
+local function UpdateLFGButton()
+    if not lfgButton then
+        print("WhisperMacros: LFG button not created yet")
+        return
+    end
+    
+    if not LFGListFrame:IsShown() then
+        lfgButton:Hide()
+        return
+    end
+    
+    -- Check if we're in the Arena category
+    local selectedCategory = LFGListFrame.CategorySelection.selectedCategory
+    
+    -- Arena categories: 4 = Arena (2v2, 3v3), 7 = Arena (skirmish), 8 = Arena (world)
+    -- Let's also check for other potential arena categories
+    local isArenaCategory = selectedCategory and (
+        selectedCategory == 4 or    -- Arena 
+        selectedCategory == 7 or    -- Arena Skirmish
+        selectedCategory == 8 or    -- Arena World
+        selectedCategory == 114 or  -- Some versions use different IDs
+        selectedCategory == 115     -- Some versions use different IDs
+    )
+    
+    if not isArenaCategory then
+        lfgButton:Hide()
+        
+        -- Restore original positions if we had repositioned entries
+        if entriesRepositioned then
+            local scrollTarget = LFGListFrame.SearchPanel.ScrollBox.ScrollTarget
+            if scrollTarget then
+                for i = 1, scrollTarget:GetNumChildren() do
+                    local child = select(i, scrollTarget:GetChildren())
+                    if child and child ~= lfgButton and originalEntryPositions[child] then
+                        local pos = originalEntryPositions[child]
+                        child:ClearAllPoints()
+                        child:SetPoint(pos.point, pos.relativeTo, pos.relativePoint, pos.xOfs, pos.yOfs)
+                    end
+                end
+                entriesRepositioned = false
+                originalEntryPositions = {}
+            end
+        end
+        return
+    end
+    
+    
+    -- Show the button
+    lfgButton:Show()
+    
+    -- Position our button as the first scrollable entry
+    local scrollBox = LFGListFrame.SearchPanel.ScrollBox
+    local scrollTarget = scrollBox and scrollBox.ScrollTarget
+    
+    if scrollBox and scrollTarget then
+        -- Make sure our button is parented to the scroll target so it scrolls
+        lfgButton:SetParent(scrollTarget)
+        
+        -- Clear existing positioning
+        lfgButton:ClearAllPoints()
+        
+        -- Position the button at the very top of the scroll content
+        lfgButton:SetPoint("TOPLEFT", scrollTarget, "TOPLEFT", 0, 0)
+        lfgButton:SetPoint("TOPRIGHT", scrollTarget, "TOPRIGHT", 0, 0)
+        
+        -- Ensure our button has the highest frame level within the scroll target
+        lfgButton:SetFrameLevel(scrollTarget:GetFrameLevel() + 100)
+        
+        -- Now shift all existing LFG entries down by our button's height (only if not already done)
+        if not entriesRepositioned then
+            local buttonHeight = lfgButton:GetHeight()
+            originalEntryPositions = {} -- Reset positions storage
+            
+            for i = 1, scrollTarget:GetNumChildren() do
+                local child = select(i, scrollTarget:GetChildren())
+                if child and child ~= lfgButton and child:IsShown() then
+                    -- Check if this looks like an LFG entry
+                    if child.resultID or (child.GetName and child:GetName() and 
+                        (child:GetName():find("LFGListSearchPanelScrollFrameButton") or 
+                         child:GetName():find("LFGListEntry") or
+                         child:GetName():find("LFGList"))) then
+                        
+                        -- Store original position
+                        local point, relativeTo, relativePoint, xOfs, yOfs = child:GetPoint()
+                        if point and yOfs then
+                            originalEntryPositions[child] = {
+                                point = point,
+                                relativeTo = relativeTo,
+                                relativePoint = relativePoint,
+                                xOfs = xOfs,
+                                yOfs = yOfs
+                            }
+                            
+                            -- Move the entry down by our button height
+                            child:ClearAllPoints()
+                            child:SetPoint(point, relativeTo, relativePoint, xOfs, yOfs - buttonHeight)
+                        end
+                    end
+                end
+            end
+            entriesRepositioned = true
+        end
+        
+    else
+        print("WhisperMacros: ScrollBox or ScrollTarget not available")
+    end
+end
+
+-- Function to hook into LFG events
+local function HookLFGEvents()
+    -- Hook into category selection
+    if LFGListFrame and LFGListFrame.CategorySelection then
+        local originalSelectCategory = LFGListFrame.CategorySelection.SelectCategory
+        LFGListFrame.CategorySelection.SelectCategory = function(self, categoryID)
+            originalSelectCategory(self, categoryID)
+            C_Timer.After(0.1, UpdateLFGButton) -- Small delay to let UI update
+        end
+    end
+    
+    -- Hook into search updates
+    local frame = CreateFrame("Frame")
+    frame:RegisterEvent("LFG_LIST_SEARCH_RESULTS_RECEIVED")
+    frame:RegisterEvent("LFG_LIST_SEARCH_RESULT_UPDATED") 
+    frame:SetScript("OnEvent", function()
+        C_Timer.After(0.5, function()
+            UpdateLFGButton()
+        end)
+    end)
+    
+    -- Hook into frame show/hide
+    if LFGListFrame then
+        LFGListFrame:HookScript("OnShow", function()
+            C_Timer.After(0.5, function()
+                UpdateLFGButton()
+            end)
+        end)
+        
+        LFGListFrame:HookScript("OnHide", function()
+            if lfgButton then
+                lfgButton:Hide()
+            end
+        end)
+    end
+end
+
+-- Initialize LFG integration
+local function InitializeLFGIntegration()
+    -- Wait for LFG frame to be available
+    if not LFGListFrame then
+        C_Timer.After(1, InitializeLFGIntegration)
+        return
+    end
+    CreateLFGButton()
+    HookLFGEvents()
 end
 
 -- Slash command handlers
@@ -1665,6 +2412,25 @@ SlashCmdList["LFG"] = function(msg)
     
     if msg == "w" then
         StartWhispering()
+    elseif msg == "test" then
+        print("WhisperMacros: Testing LFG integration")
+        print("LFGListFrame exists:", LFGListFrame and "yes" or "no")
+        if LFGListFrame then
+            print("LFGListFrame is shown:", LFGListFrame:IsShown() and "yes" or "no")
+            if LFGListFrame.CategorySelection then
+                print("Selected category:", LFGListFrame.CategorySelection.selectedCategory or "nil")
+            end
+        end
+        print("LFG button created:", lfgButtonCreated and "yes" or "no")
+        if lfgButton then
+            print("LFG button shown:", lfgButton:IsShown() and "yes" or "no")
+        end
+        UpdateLFGButton()
+    elseif msg == "force" then
+        print("WhisperMacros: Force creating LFG button")
+        lfgButtonCreated = false
+        CreateLFGButton()
+        UpdateLFGButton()
     else
         CreateMainInterface()
     end
@@ -1674,6 +2440,7 @@ end
 local function OnAddonLoaded(self, event, addonName)
     if addonName == "WhisperMacros" then
         InitializeDefaults()
+        InitializeLFGIntegration()
         print("|cff4da6ffWhisper Macros|r |cff00ff00loaded!|r Use |cffffd700/lfg|r to open interface, |cffffd700/lfg w|r to whisper players")
     end
 end
@@ -1689,3 +2456,6 @@ addon:SetScript("OnEvent", function(self, event, ...)
         OnWhisperResult(self, event, ...)
     end
 end)
+
+-- Initialize LFG integration on addon load
+C_Timer.After(1, InitializeLFGIntegration)
